@@ -118,6 +118,10 @@ flutter:
         - asset: assets/fonts/poppins/Poppins-Black.ttf
           weight: 900
 
+    - family: SignPainter
+      fonts:
+        - asset: assets/fonts/sign_painter/signpainter.otf
+
 
   # fonts:
   #   - family: Schyler

@@ -7,7 +7,11 @@ extension FontFamilyExtension on FontFamily {
   String get name {
     switch (this) {
       case FontFamily.avenir:
-        return 'Avenir'; // Matches pubspec.yaml
+        return 'Avenir';
+      case FontFamily.poppins:
+        return 'Poppins'; // Matches pubspec.yaml
+      case FontFamily.signPainter:
+        return 'SignPainter';
     }
   }
 }

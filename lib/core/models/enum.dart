@@ -1,4 +1,8 @@
-enum FontFamily { avenir }
+enum FontFamily {
+  avenir,
+  poppins,
+  signPainter
+}
 
 enum ImageType { asset, network, file }
 

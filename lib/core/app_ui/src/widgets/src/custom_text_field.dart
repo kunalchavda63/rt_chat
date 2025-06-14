@@ -18,6 +18,7 @@ class CustomTextField extends StatelessWidget {
   final TextStyle? style;
   final TextStyle? hintStyle;
   final TextStyle? labelStyle;
+  final FocusNode? focusNode;
 
   const CustomTextField({
     super.key,
@@ -38,16 +39,19 @@ class CustomTextField extends StatelessWidget {
     this.style,
     this.hintStyle,
     this.labelStyle,
+    this.focusNode,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      focusNode: focusNode,
       keyboardType: textInputType,
-
       style: style,
       expands: isExpand ?? false,
       controller: controller,
+      cursorHeight: 20,
+
       textInputAction: textInputAction,
       decoration: InputDecoration(
         border: border,
@@ -58,6 +62,8 @@ class CustomTextField extends StatelessWidget {
         focusedBorder: border,
         contentPadding: padding,
         hintText: hintText,
+        labelText: label,
+        floatingLabelStyle: labelStyle,
         hintStyle: hintStyle,
         labelStyle: labelStyle,
         filled: filled,

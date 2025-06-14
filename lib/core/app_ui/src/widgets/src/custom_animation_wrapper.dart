@@ -12,12 +12,12 @@ class CustomAnimatedWrapper extends StatefulWidget {
   final Curve curve;
 
   const CustomAnimatedWrapper({
-    Key? key,
+    super.key,
     required this.child,
     this.animationType = AnimationType.fade,
     this.duration = const Duration(milliseconds: 500),
     this.curve = Curves.easeInOut,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomAnimatedWrapper> createState() => _CustomAnimatedWrapperState();

@@ -49,8 +49,8 @@ class CustomContainer extends StatelessWidget {
           boxShadow: boxShadow,
           shape: boxShape ?? BoxShape.rectangle,
         ),
-        child: child,
         clipBehavior: clipBehaviour ?? Clip.none,
+        child: child,
       ),
     );
   }

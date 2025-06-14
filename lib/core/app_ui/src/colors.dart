@@ -12,4 +12,25 @@ class AppColors {
   static const Color hex7777 = Color(0XFF777777);
   static const Color hex5353 = Color(0XFF535353);
   static const Color hex3E3f = Color(0XFF3E3F3F);
+
+  // White Smoke and wine
+  static const Color hexF8f4 = Color(0XFFF8F4F3);
+  static const Color hex5c23 = Color(0XFF5C2334);
+
+  // Persian Pink and Lavendar Pink
+  static const Color hexF792 = Color(0XFFF792CC);
+  static const Color hexFfda = Color(0XFFFFDAFC);
+
+  // Robin Egg Blue and Black Olive
+  static const Color hex4fc9 = Color(0XFF4FC9CC);
+  static const Color hex2e38 = Color(0XFF2E3830);
+
+  // Double Teal and Lemon Yellow
+  static const Color hex2744 = Color(0XFF27443F);
+  static const Color hexF2fd = Color(0XFFF2FD7D);
+
+  // Platinum and photo Blue
+
+  static const Color hexE0f2 = Color(0XFFE0F2F2);
+  static const Color hex6dc7 = Color(0XFF6DC7CF);
 }

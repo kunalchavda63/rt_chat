@@ -11,13 +11,13 @@ class CustomImageView extends StatelessWidget {
   final BoxFit fit;
 
   const CustomImageView({
-    Key? key,
+    super.key,
     required this.path,
     required this.sourceType,
     this.height,
     this.width,
     this.fit = BoxFit.cover,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

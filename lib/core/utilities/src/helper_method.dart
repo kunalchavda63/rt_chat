@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rt_chat/core/app_ui/app_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<bool> takeLocationPermission() async {
@@ -94,4 +95,24 @@ void go(BuildContext context, String path) {
 
 void back(BuildContext context) {
   context.pop();
+}
+
+void setStatusBarDarkStyle() {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: AppColors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.dark,
+    ),
+  );
+}
+
+void setStatusBarLightStyle() {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: AppColors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.light,
+    ),
+  );
 }

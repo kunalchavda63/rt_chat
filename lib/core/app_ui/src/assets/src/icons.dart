@@ -9,4 +9,6 @@ class AssetIcons {
   static const String icAppBgWhite = '$icPath/ic_app_bg_white.svg';
   static const String icChrome = '$icPath/ic_chrome.svg';
   static const String icWhatsapp = '$icPath/ic_whatsapp.svg';
+  static const String icSent = '$icPath/ic_sent.svg';
+  static const String icEye = '$icPath/ic_eye.svg';
 }

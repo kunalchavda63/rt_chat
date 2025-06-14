@@ -50,8 +50,8 @@ class CustomFloatingButton extends StatelessWidget {
           onPressed: onTap,
           backgroundColor: backgroundColor,
           tooltip: toolTip,
-          child: child,
           shape: const CircleBorder(),
+          child: child,
         );
     }
   }

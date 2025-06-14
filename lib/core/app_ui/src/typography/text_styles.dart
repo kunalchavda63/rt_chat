@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rt_chat/core/app_ui/app_ui.dart';
 
 class BaseStyle {
@@ -12,4 +13,12 @@ class BaseStyle {
   static TextStyle s10w700 = TextStyle().family(FontFamily.avenir).s(10).w(700);
   static TextStyle s14w500 = TextStyle().family(FontFamily.avenir).s(14).w(500);
   static TextStyle s19w900 = TextStyle().family(FontFamily.avenir).s(19).w(900);
+  static TextStyle s50w400 = TextStyle()
+      .family(FontFamily.signPainter)
+      .s(50)
+      .w(400);
+  static TextStyle s80w500 = TextStyle()
+      .family(FontFamily.signPainter)
+      .s(80.sp)
+      .c(AppColors.white);
 }

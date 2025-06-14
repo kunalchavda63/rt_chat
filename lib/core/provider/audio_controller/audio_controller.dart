@@ -1,5 +1,6 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:rt_chat/core/utilities/src/extensions/logger/logger.dart';
 
 part 'audio_controller.g.dart';
 
@@ -15,7 +16,7 @@ class AudioController extends _$AudioController {
     _player.playbackEventStream.listen(
       (event) {},
       onError: (Object e, StackTrace st) {
-        print('Audio player error: $e');
+        logger.i('Audio player error: $e');
       },
     );
 
@@ -38,7 +39,7 @@ class AudioController extends _$AudioController {
       // Play the audio
       await _player.play();
     } catch (e, st) {
-      print('Error playing audio: $e\n$st');
+      logger.i('Error playing audio: $e\n$st');
       rethrow;
     }
   }

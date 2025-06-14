@@ -20,8 +20,10 @@ class CustomWidgets {
     TextStyle? style,
     TextStyle? labelStyle,
     TextStyle? hintStyle,
+    FocusNode? focusNode,
   }) {
     return CustomTextField(
+      focusNode: focusNode,
       label: label,
       hintText: hintText,
       hintStyle: hintStyle,
@@ -203,8 +205,8 @@ class CustomWidgets {
       onTap: onTap,
       backgroundColor: backgroundColor,
       toolTip: toolTip,
-      child: child,
       type: fabType, // ✅ This was missing
+      child: child,
     );
   }
 
@@ -254,6 +256,7 @@ class CustomWidgets {
     return CustomPlaylistCard();
   }
 
+  // Custom Animation Wrapper
   static Widget customAnimationWrapper({
     AnimationType? animationType,
     Duration? duration,
@@ -267,4 +270,6 @@ class CustomWidgets {
       child: child ?? Center(),
     );
   }
+
+  // Custom Button
 }
