@@ -1,3 +1,5 @@
+import 'package:rt_chat/core/app_ui/src/widgets/src/buttons/src/custom_button.dart';
+
 import 'widgets.dart';
 
 class CustomWidgets {
@@ -95,7 +97,7 @@ class CustomWidgets {
       sourceType: sourceType ?? ImageType.asset,
       height: height,
       width: width,
-      fit: fit ?? BoxFit.contain,
+      fit: fit,
     );
   }
 
@@ -272,4 +274,11 @@ class CustomWidgets {
   }
 
   // Custom Button
+  static Widget customButton({
+    String? label,
+    VoidCallback? onTap,
+    bool? isFullyWhite,
+  }) {
+    return CustomButton(label: label, onTap: onTap, isFullyWhite: isFullyWhite);
+  }
 }

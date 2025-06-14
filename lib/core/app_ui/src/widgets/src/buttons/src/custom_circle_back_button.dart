@@ -13,10 +13,17 @@ class CustomCircleBackButton extends StatelessWidget {
       onTap: () {
         context.pop();
       },
+      border: Border.all(color: AppColors.hex5c23),
       padding: EdgeInsets.all(8),
-      color: AppColors.hex0303,
+      color: AppColors.transparent,
       boxShape: BoxShape.circle,
-      child: SvgPicture.asset(AssetIcons.icCutLeft, height: 16, width: 16),
+      child: SvgPicture.asset(
+        AssetIcons.icCutLeft,
+
+        colorFilter: ColorFilter.mode(AppColors.hex5c23, BlendMode.srcIn),
+        height: 32,
+        width: 32,
+      ),
     );
   }
 }

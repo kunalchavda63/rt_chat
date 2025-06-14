@@ -1,15 +1,10 @@
 enum RoutesEnum {
-  onboard('/onboard')
-  //   // login('/login'),
-  //   // register('/register'),
-  //   // artists('/artists'),
-  //   // podcasts('/podcasts'),
-  //   // otp('/otp'),
-  //   // screen('/screen'),
-  //   // homeScreen('/homeScreen'),
-  //   // panelDemo('/panelDemo'),
-  //   // androidScreen('/androidScreen'),
-  //   // windowScreen('/windowsScreen');
+  // onboard('/onboard')
+  login('/login'),
+  register('/register'),
+  forgot('/forgot'),
+  otp('/otp'),
+  reset('/reset')
   //
   ;
 

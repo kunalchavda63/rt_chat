@@ -8,7 +8,7 @@ class CustomImageView extends StatelessWidget {
   final ImageType sourceType;
   final double? height;
   final double? width;
-  final BoxFit fit;
+  final BoxFit? fit;
 
   const CustomImageView({
     super.key,
@@ -16,7 +16,7 @@ class CustomImageView extends StatelessWidget {
     required this.sourceType,
     this.height,
     this.width,
-    this.fit = BoxFit.cover,
+    this.fit,
   });
 
   @override
