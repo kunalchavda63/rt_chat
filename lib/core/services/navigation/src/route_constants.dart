@@ -1,9 +1,9 @@
 enum RoutesEnum {
   // onboard('/onboard')
+  appEntryPoint('/appEntry'),
   login('/login'),
   register('/register'),
   forgot('/forgot'),
-  otp('/otp'),
   reset('/reset')
   //
   ;

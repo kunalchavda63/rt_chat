@@ -1,7 +1,9 @@
+import 'package:rt_chat/features/onboarding/onboarding.dart';
+
 import 'routes.dart';
 
 final goRouterConfig = GoRouter(
-  initialLocation: RoutesEnum.login.path,
+  initialLocation: RoutesEnum.appEntryPoint.path,
   debugLogDiagnostics: true,
   routes: [
     GoRoute(
@@ -19,15 +21,11 @@ final goRouterConfig = GoRouter(
       path: RoutesEnum.forgot.path,
       pageBuilder: (_, __) => const NoTransitionPage(child: ForgotScreen()),
     ),
+
     GoRoute(
-      name: RoutesEnum.otp.name,
-      path: RoutesEnum.otp.path,
-      pageBuilder: (_, __) => const NoTransitionPage(child: OtpScreen()),
-    ),
-    GoRoute(
-      name: RoutesEnum.reset.name,
-      path: RoutesEnum.reset.path,
-      pageBuilder: (_, __) => const NoTransitionPage(child: ResetScreen()),
+      name: RoutesEnum.appEntryPoint.name,
+      path: RoutesEnum.appEntryPoint.path,
+      pageBuilder: (_, __) => const NoTransitionPage(child: AppEntryPoint()),
     ),
   ],
 );

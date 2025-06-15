@@ -39,3 +39,13 @@ String? validateGender(String? value) {
   }
   return null;
 }
+
+String? confirmPasswordValidator(String? confirmPassword, String? password) {
+  if (confirmPassword == null || confirmPassword.isEmpty) {
+    return 'Please confirm your password';
+  }
+  if (password != confirmPassword) {
+    return 'Passwords do not match';
+  }
+  return null;
+}
