@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/utilities/src/extensions/logger/logger.dart';
@@ -12,8 +13,10 @@ final authServiceProvider = Provider<AuthService>((ref) {
 
 class AuthService {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   User? get currentUser => firebaseAuth.currentUser;
+
   Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
 
   Future<UserCredential> signIn({
@@ -26,14 +29,28 @@ class AuthService {
     );
   }
 
-  Future<UserCredential> createAccount({
+  Future<UserCredential?> createAccount({
     required String email,
     required String password,
   }) async {
-    return await firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    try {
+      UserCredential userCredential = await firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      firestore.collection("Users").doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+        'email': email,
+      });
+
+      return userCredential;
+    } catch (e) {
+      if (e is FirebaseAuthException) {
+        logger.e('FirebaseAuthException: ${e.message}');
+      } else {
+        logger.e('Unknown error: $e');
+      }
+      return null;
+    }
   }
 
   Future<void> signOut() async {

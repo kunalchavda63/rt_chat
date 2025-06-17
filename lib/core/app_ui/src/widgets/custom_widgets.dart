@@ -1,4 +1,5 @@
-import 'package:rt_chat/core/app_ui/src/widgets/src/buttons/src/custom_button.dart';
+import 'package:rt_chat/core/app_ui/src/widgets/src/custom_chat_card.dart';
+import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 
 import 'widgets.dart';
 
@@ -61,6 +62,7 @@ class CustomWidgets {
     Alignment? alignment,
     BlendMode? blendMode,
     Clip? clip,
+    String? path,
   }) {
     return CustomContainer(
       h: h,
@@ -75,6 +77,7 @@ class CustomWidgets {
       boxShape: boxShape,
       blendMode: blendMode,
       clipBehaviour: clip,
+      path: path,
       child: child,
     );
   }
@@ -280,5 +283,9 @@ class CustomWidgets {
     bool? isFullyWhite,
   }) {
     return CustomButton(label: label, onTap: onTap, isFullyWhite: isFullyWhite);
+  }
+
+  static Widget customChatCard({UserModel? user}) {
+    return CustomChatCard(userModel: user);
   }
 }

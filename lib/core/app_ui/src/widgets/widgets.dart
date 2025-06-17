@@ -14,5 +14,6 @@ export 'package:rt_chat/core/app_ui/src/widgets/src/custom_playlist_card.dart';
 export 'package:rt_chat/core/app_ui/src/widgets/src/custom_text.dart';
 export 'package:rt_chat/core/app_ui/src/widgets/src/custom_text_field.dart';
 export 'package:rt_chat/core/models/src/bottom_nav_model.dart';
+export 'package:rt_chat/core/app_ui/src/widgets/src/buttons/src/custom_button.dart';
 
 export '../../../models/models.dart';

@@ -96,11 +96,17 @@ void back(BuildContext context) {
 }
 
 void setStatusBarDarkStyle() {
+  // todo add chage dark and light issue custom navigation issue
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
+      systemNavigationBarIconBrightness: Brightness.dark,
       statusBarColor: AppColors.transparent,
       statusBarIconBrightness: Brightness.dark,
       statusBarBrightness: Brightness.dark,
+      systemNavigationBarColor: AppColors.hex5c23,
+      systemNavigationBarContrastEnforced: true,
+      systemNavigationBarDividerColor: AppColors.hex5c23,
+      systemStatusBarContrastEnforced: false,
     ),
   );
 }

@@ -25,7 +25,9 @@ final goRouterConfig = GoRouter(
     GoRoute(
       name: RoutesEnum.appEntryPoint.name,
       path: RoutesEnum.appEntryPoint.path,
-      pageBuilder: (_, __) => const NoTransitionPage(child: AppEntryPoint()),
+      pageBuilder: (_, state) {
+        return NoTransitionPage(child: AppEntryPoint());
+      },
     ),
   ],
 );

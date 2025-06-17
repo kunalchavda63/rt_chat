@@ -1,7 +1,6 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rt_chat/core/app_ui/app_ui.dart';
-import 'package:rt_chat/core/services/navigation/router.dart';
 import 'package:rt_chat/core/utilities/utils.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -117,7 +116,7 @@ class _OtpScreenState extends State<OtpScreen> {
               CustomWidgets.customButton(
                 label: AppStrings.verify,
                 onTap: () {
-                  push(context, RoutesEnum.reset.path);
+                  // push(context, RoutesEnum.reset.path);
                 },
                 isFullyWhite: true,
               ).padH(15.r).padBottom(10.r),

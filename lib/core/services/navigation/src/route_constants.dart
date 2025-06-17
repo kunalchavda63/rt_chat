@@ -3,10 +3,7 @@ enum RoutesEnum {
   appEntryPoint('/appEntry'),
   login('/login'),
   register('/register'),
-  forgot('/forgot'),
-  reset('/reset')
-  //
-  ;
+  forgot('/forgot');
 
   const RoutesEnum(this.path);
 

@@ -14,6 +14,7 @@ class CustomContainer extends StatelessWidget {
   final BoxShape? boxShape;
   final BlendMode? blendMode;
   final Clip? clipBehaviour;
+  final String? path;
 
   const CustomContainer({
     super.key,
@@ -30,6 +31,7 @@ class CustomContainer extends StatelessWidget {
     this.boxShape,
     this.blendMode,
     this.clipBehaviour,
+    this.path,
   });
 
   @override
@@ -43,6 +45,14 @@ class CustomContainer extends StatelessWidget {
         padding: padding,
         decoration: BoxDecoration(
           backgroundBlendMode: blendMode,
+          image:
+              path != null
+                  ? DecorationImage(
+                    opacity: 0.2,
+                    fit: BoxFit.cover,
+                    image: AssetImage(path ?? ''),
+                  )
+                  : null,
           border: border,
           borderRadius: borderRadius,
           color: color,

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rt_chat/core/app_ui/app_ui.dart';
-import 'package:rt_chat/core/services/navigation/router.dart';
 import 'package:rt_chat/core/utilities/utils.dart';
 import 'package:rt_chat/features/onboarding/auth_sevice/suth_service.dart';
 
@@ -130,7 +129,7 @@ class _ForgotScreenState extends ConsumerState<ForgotScreen> {
                     onTap: () {
                       if (_form.currentState!.validate()) {
                         sentEmail();
-                        push(context, RoutesEnum.reset.path);
+                        back(context);
                       }
                     },
                     label: AppStrings.send,
