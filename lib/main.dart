@@ -12,11 +12,11 @@ Future<void> main() async {
   runApp(ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ScreenUtilInit(
       designSize: Size(375, 812),
       builder: (context, _) {

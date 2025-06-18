@@ -1,5 +1,5 @@
 class AppStrings {
-  static const String welcomeBack = 'Welcome back!';
+  static const String welcomeBack = 'Welcome\n back!';
   static const String loginC = 'LOGIN';
   static const String email = 'Email';
   static const String password = 'Password';
@@ -26,4 +26,24 @@ class AppStrings {
   static const String resend = 'Resend';
   static const String resetPassword = 'Reset Password';
   static const String submit = 'Submit';
+  static const String searchUser = 'Search User';
+  static const String search = 'Search';
+  static const String newGroup = 'New Group';
+  static const String newBroadCast = 'New BroadCase';
+  static const String linkedDevice = 'Linked Device';
+  static const String starred = 'Starred';
+  static const String payments = 'Payments';
+  static const String readAll = 'Read All';
+  static const String settings = 'Settings';
+  static const String account = 'Account';
+  static const String securityNotification = 'Security Notification';
+  static const String changeNumber = 'Change Number';
+  static const String privacy = 'Privacy';
+  static const String blockContacts = 'Block Contacts';
+  static const String disappearingMessages = 'disappearing messages';
+  static const String avatar = 'Avatar';
+  static const String create = 'Create';
+  static const String edit = 'Edit';
+  static const String profilePhoto = 'Profile Photo';
+  static const String lists = 'Lists';
 }

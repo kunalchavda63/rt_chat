@@ -20,7 +20,7 @@ class CustomGreenButton extends StatelessWidget {
 
       child: CustomWidgets.customText(
         data: text ?? '',
-        style: style ?? BaseStyle.s16w900,
+        style: style ?? BaseStyle.s16w500,
       ),
     );
   }

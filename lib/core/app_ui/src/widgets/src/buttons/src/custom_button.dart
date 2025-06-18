@@ -21,9 +21,9 @@ class CustomButton extends StatelessWidget {
       onTap: onTap,
       h: 50.r,
       w: size.width,
-      color: AppColors.hexF8f4,
+      color: AppColors.hexEeeb,
       border: Border.all(
-        color: isFullyWhite == true ? AppColors.hex5c23 : AppColors.transparent,
+        color: isFullyWhite == true ? AppColors.hex2824 : AppColors.transparent,
       ),
       alignment: Alignment.center,
       borderRadius: BorderRadius.circular(15),
@@ -44,10 +44,10 @@ class CustomButton extends StatelessWidget {
             alignment: Alignment.center,
             child: CustomWidgets.customText(
               data: label ?? AppStrings.loginC,
-              style: BaseStyle.s28w900
+              style: BaseStyle.s28w400
                   .w(400)
-                  .c(AppColors.hex5c23)
-                  .family(FontFamily.signPainter),
+                  .c(AppColors.hex2824)
+                  .family(FontFamily.poppins),
             ),
           ),
         ],

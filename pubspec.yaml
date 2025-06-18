@@ -58,6 +58,7 @@ dependencies:
   cloud_firestore: ^5.6.9
   google_sign_in: ^6.3.0
   shared_preferences: ^2.5.3
+  fluttertoast: ^8.2.12
 
 dev_dependencies:
   build_runner: ^2.4.15
@@ -123,10 +124,6 @@ flutter:
           weight: 800
         - asset: assets/fonts/poppins/Poppins-Black.ttf
           weight: 900
-
-    - family: SignPainter
-      fonts:
-        - asset: assets/fonts/sign_painter/signpainter.otf
 
 
   # fonts:

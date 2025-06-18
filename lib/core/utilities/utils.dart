@@ -7,3 +7,4 @@ export 'src/loader_overlay/ots.dart';
 export 'src/provider_observer.dart';
 export 'src/strings.dart';
 export 'src/validator.dart';
+export 'src/extensions/logger/logger.dart';

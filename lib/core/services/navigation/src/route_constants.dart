@@ -3,7 +3,11 @@ enum RoutesEnum {
   appEntryPoint('/appEntry'),
   login('/login'),
   register('/register'),
-  forgot('/forgot');
+  forgot('/forgot'),
+  chatScreen('/'),
+  callLogsScreen('/'),
+  profileSetup('/profileSetup'),
+  searchUser('/searchUser');
 
   const RoutesEnum(this.path);
 

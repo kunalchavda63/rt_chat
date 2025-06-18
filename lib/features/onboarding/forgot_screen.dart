@@ -1,12 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rt_chat/core/app_ui/app_ui.dart';
 import 'package:rt_chat/core/utilities/utils.dart';
 import 'package:rt_chat/features/onboarding/auth_sevice/suth_service.dart';
-
-import '../../core/utilities/src/extensions/logger/logger.dart';
 
 class ForgotScreen extends ConsumerStatefulWidget {
   const ForgotScreen({super.key});
@@ -19,9 +16,9 @@ class _ForgotScreenState extends ConsumerState<ForgotScreen> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final FocusNode _emailFocus = FocusNode();
-  final style = BaseStyle.s20w900
-      .c(AppColors.hex5c23)
-      .family(FontFamily.signPainter)
+  final style = BaseStyle.s17w400
+      .c(AppColors.hex2824)
+      .family(FontFamily.poppins)
       .line(0.9);
 
   late Size size;
@@ -38,15 +35,20 @@ class _ForgotScreenState extends ConsumerState<ForgotScreen> {
     final provider = ref.watch(authServiceProvider);
     void sentEmail() async {
       try {
-        await provider.resetPassword(email: _emailController.text.trim());
-        logger.i('Sent Link Successfully');
-      } on FirebaseAuthException catch (e) {
-        logger.e(e.message);
+        await provider.resetPassword(
+          email: _emailController.text.trim(),
+          context: context,
+        );
+      } catch (e) {
+        logger.e(e.toString());
+        showErrorToast("An error occurred.");
+        // Don't go back here either
       }
     }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
       body: Form(
         key: _form,
         child: CustomWidgets.customAnimationWrapper(
@@ -59,13 +61,13 @@ class _ForgotScreenState extends ConsumerState<ForgotScreen> {
               CustomWidgets.customContainer(
                 h: size.height,
                 w: size.width,
-                color: AppColors.hexF8f4,
+                color: AppColors.hexEeeb,
                 child: Stack(
                   children: [
                     SizedBox(height: size.height),
                     Positioned.fill(
                       child: Opacity(
-                        opacity: 0.08,
+                        opacity: 0.1,
                         child: CustomImageView(
                           path: AssetImages.imgBg,
                           fit: BoxFit.cover,
@@ -83,45 +85,47 @@ class _ForgotScreenState extends ConsumerState<ForgotScreen> {
               ),
               Column(
                 children: [
+                  SizedBox(height: 50.r),
                   CustomWidgets.customAnimationWrapper(
                     animationType: AnimationType.fade,
                     curve: Curves.decelerate,
                     duration: Duration(milliseconds: 800),
                     child: SvgPicture.asset(
-                      height: 150.r,
-                      width: 150.r,
+                      height: 100.r,
+                      width: 100.r,
                       AssetIcons.icForgot,
                       colorFilter: ColorFilter.mode(
-                        AppColors.hex5c23,
+                        AppColors.hex2824,
                         BlendMode.srcIn,
                       ),
                     ).padTop(50.r),
                   ),
                   CustomWidgets.customText(
+                    textAlign: TextAlign.center,
                     data: AppStrings.forgotPassword,
                     style: BaseStyle.s50w400
-                        .c(AppColors.hex5c23)
-                        .family(FontFamily.signPainter),
+                        .c(AppColors.hex2824)
+                        .family(FontFamily.poppins),
                   ).padBottom(20.r),
                   CustomWidgets.customText(
                     textAlign: TextAlign.center,
                     data: AppStrings.forgotPara,
-                    style: BaseStyle.s17w900
-                        .w(200)
-                        .c(AppColors.hex5c23)
-                        .family(FontFamily.signPainter),
+                    style: BaseStyle.s14w500
+                        .c(AppColors.hex2824)
+                        .family(FontFamily.poppins),
                   ).padH(22.r).padBottom(30.r),
                   CustomWidgets.customTextField(
+                    validator: validateEmail,
                     controller: _emailController,
                     textInputType: TextInputType.emailAddress,
                     focusNode: _emailFocus,
-                    fillColor: AppColors.hexF8f4,
+                    fillColor: AppColors.hexEeeb,
                     filled: true,
                     label: AppStrings.email,
                     style: style,
                     labelStyle: style,
                     border: OutlinedInputBorder(
-                      borderSide: BorderSide(color: AppColors.hex5c23),
+                      borderSide: BorderSide(color: AppColors.hex2824),
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ).padH(10).padBottom(20.r),
@@ -129,7 +133,6 @@ class _ForgotScreenState extends ConsumerState<ForgotScreen> {
                     onTap: () {
                       if (_form.currentState!.validate()) {
                         sentEmail();
-                        back(context);
                       }
                     },
                     label: AppStrings.send,

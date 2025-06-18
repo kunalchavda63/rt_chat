@@ -14,9 +14,9 @@ class OtpScreen extends StatefulWidget {
 class _OtpScreenState extends State<OtpScreen> {
   final TextEditingController _otpController = TextEditingController();
   final FocusNode _otpFocus = FocusNode();
-  final style = BaseStyle.s20w900
-      .c(AppColors.hex5c23)
-      .family(FontFamily.signPainter)
+  final style = BaseStyle.s20w400
+      .c(AppColors.hex2824)
+      .family(FontFamily.poppins)
       .line(0.9);
 
   late Size size;
@@ -38,7 +38,7 @@ class _OtpScreenState extends State<OtpScreen> {
           CustomWidgets.customContainer(
             h: size.height,
             w: size.width,
-            color: AppColors.hexF8f4,
+            color: AppColors.hexEeeb,
             child: Stack(
               children: [
                 SizedBox(height: size.height),
@@ -71,7 +71,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   width: 150.r,
                   AssetIcons.icOtp,
                   colorFilter: ColorFilter.mode(
-                    AppColors.hex5c23,
+                    AppColors.hex2824,
                     BlendMode.srcIn,
                   ),
                 ).padTop(50.r),
@@ -79,22 +79,22 @@ class _OtpScreenState extends State<OtpScreen> {
               CustomWidgets.customText(
                 data: AppStrings.otpVerification,
                 style: BaseStyle.s50w400
-                    .c(AppColors.hex5c23)
-                    .family(FontFamily.signPainter),
+                    .c(AppColors.hex2824)
+                    .family(FontFamily.poppins),
               ).padBottom(20.r),
               CustomWidgets.customText(
                 textAlign: TextAlign.center,
                 data: "${AppStrings.enterTheOtp} kunal@gmail.com",
-                style: BaseStyle.s28w900
+                style: BaseStyle.s28w400
                     .w(200)
-                    .c(AppColors.hex5c23)
-                    .family(FontFamily.signPainter),
+                    .c(AppColors.hex2824)
+                    .family(FontFamily.poppins),
               ).padH(22.r).padBottom(30.r),
 
               PinCodeTextField(
-                textStyle: BaseStyle.s20w900
-                    .c(AppColors.hex5c23)
-                    .family(FontFamily.signPainter),
+                textStyle: BaseStyle.s20w400
+                    .c(AppColors.hex2824)
+                    .family(FontFamily.poppins),
                 appContext: context,
                 length: 4,
                 controller: _otpController,
@@ -104,12 +104,12 @@ class _OtpScreenState extends State<OtpScreen> {
                   shape: PinCodeFieldShape.circle,
                   fieldHeight: 60.r,
                   fieldWidth: 60.r,
-                  activeColor: AppColors.hex5c23,
-                  selectedColor: AppColors.hex5c23,
-                  selectedFillColor: AppColors.hex5c23,
-                  inactiveFillColor: AppColors.hex5c23,
-                  inactiveColor: AppColors.hex5c23,
-                  activeFillColor: AppColors.hex5c23,
+                  activeColor: AppColors.hex2824,
+                  selectedColor: AppColors.hex2824,
+                  selectedFillColor: AppColors.hex2824,
+                  inactiveFillColor: AppColors.hex2824,
+                  inactiveColor: AppColors.hex2824,
+                  activeFillColor: AppColors.hex2824,
                 ),
               ).padH(20),
 
@@ -127,15 +127,15 @@ class _OtpScreenState extends State<OtpScreen> {
                 children: [
                   CustomWidgets.customText(
                     data: AppStrings.didNotReceivedOtp,
-                    style: BaseStyle.s20w900
-                        .c(AppColors.hex5c23)
-                        .family(FontFamily.signPainter),
+                    style: BaseStyle.s20w400
+                        .c(AppColors.hex2824)
+                        .family(FontFamily.poppins),
                   ),
                   CustomWidgets.customText(
                     data: AppStrings.resend,
-                    style: BaseStyle.s20w900
+                    style: BaseStyle.s20w400
                         .c(AppColors.hex2744)
-                        .family(FontFamily.signPainter),
+                        .family(FontFamily.poppins),
                   ),
                 ],
               ),

@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rt_chat/core/app_ui/app_ui.dart';
-import 'package:rt_chat/core/utilities/src/extensions/logger/logger.dart';
 import 'package:rt_chat/core/utilities/utils.dart';
 import 'package:rt_chat/features/onboarding/auth_sevice/suth_service.dart';
 
@@ -23,9 +22,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final FocusNode _userIdFocus = FocusNode();
   final FocusNode _passFocus = FocusNode();
   final FocusNode _confirmPassFocus = FocusNode();
-  final style = BaseStyle.s20w900
-      .c(AppColors.hex5c23)
-      .family(FontFamily.signPainter)
+  final style = BaseStyle.s17w400
+      .c(AppColors.hex2824)
+      .family(FontFamily.poppins)
       .line(0.9);
 
   late Size size;
@@ -43,6 +42,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     void register() async {
       try {
         await provider.createAccount(
+          context: context,
           email: _emailController.text.trim(),
           password: _passController.text.trim(),
         );
@@ -52,7 +52,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     }
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
+      appBar: PreferredSize(
+        preferredSize: Size.zero,
+        child: AppBar(backgroundColor: AppColors.hex2824),
+      ),
+
       body: Form(
         key: _form,
         child: Stack(
@@ -61,7 +67,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             CustomWidgets.customContainer(
               h: size.height,
               w: size.width,
-              color: AppColors.hexF8f4,
+              color: AppColors.hexEeeb,
               child: Stack(
                 children: [
                   Opacity(
@@ -88,7 +94,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               child: CustomWidgets.customContainer(
                 h: size.height / 1.17,
                 w: size.width,
-                color: AppColors.hex5c23,
+                color: AppColors.hex2824,
                 padding: EdgeInsets.symmetric(horizontal: 10.r),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
@@ -97,29 +103,24 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    CustomWidgets.customAnimationWrapper(
-                      animationType: AnimationType.slideFromLeft,
-                      duration: Duration(seconds: 2),
-                      curve: Curves.decelerate,
-                      child: CustomWidgets.customText(
-                        data: AppStrings.signUp,
-                        style: BaseStyle.s50w400
-                            .c(AppColors.hexF8f4)
-                            .family(FontFamily.signPainter),
-                      ).padLeft(10.r),
-                    ).padBottom(50.r),
+                    CustomWidgets.customText(
+                      data: AppStrings.signUp,
+                      style: BaseStyle.s50w400
+                          .c(AppColors.hexEeeb)
+                          .family(FontFamily.poppins),
+                    ).padLeft(10.r).padBottom(50.r),
                     CustomWidgets.customTextField(
                       controller: _userIdController,
                       textInputAction: TextInputAction.next,
                       textInputType: TextInputType.emailAddress,
                       focusNode: _userIdFocus,
-                      fillColor: AppColors.hexF8f4,
+                      fillColor: AppColors.hexEeeb,
                       filled: true,
                       label: AppStrings.userid,
                       style: style,
                       labelStyle: style,
                       border: OutlinedInputBorder(
-                        borderSide: BorderSide(color: AppColors.hexF8f4),
+                        borderSide: BorderSide(color: AppColors.hexEeeb),
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ).padH(10).padBottom(20.r),
@@ -129,13 +130,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       textInputAction: TextInputAction.next,
                       textInputType: TextInputType.emailAddress,
                       focusNode: _emailFocus,
-                      fillColor: AppColors.hexF8f4,
+                      fillColor: AppColors.hexEeeb,
                       filled: true,
                       label: AppStrings.email,
                       style: style,
                       labelStyle: style,
                       border: OutlinedInputBorder(
-                        borderSide: BorderSide(color: AppColors.hexF8f4),
+                        borderSide: BorderSide(color: AppColors.hexEeeb),
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ).padH(10).padBottom(20.r),
@@ -145,13 +146,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       textInputAction: TextInputAction.next,
                       textInputType: TextInputType.emailAddress,
                       focusNode: _passFocus,
-                      fillColor: AppColors.hexF8f4,
+                      fillColor: AppColors.hexEeeb,
                       filled: true,
                       label: AppStrings.password,
                       style: style,
                       labelStyle: style,
                       border: OutlinedInputBorder(
-                        borderSide: BorderSide(color: AppColors.hexF8f4),
+                        borderSide: BorderSide(color: AppColors.hexEeeb),
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ).padH(10).padBottom(20.r),
@@ -164,13 +165,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       controller: _confirmPassController,
                       textInputType: TextInputType.visiblePassword,
                       focusNode: _confirmPassFocus,
-                      fillColor: AppColors.hexF8f4,
+                      fillColor: AppColors.hexEeeb,
                       filled: true,
                       label: AppStrings.confirmPassword,
                       style: style,
                       labelStyle: style,
                       border: OutlinedInputBorder(
-                        borderSide: BorderSide(color: AppColors.hexF8f4),
+                        borderSide: BorderSide(color: AppColors.hexEeeb),
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ).padH(10).padBottom(20.r),
@@ -189,7 +190,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       children: [
                         CustomWidgets.customText(
                           data: AppStrings.alreadyHaveAnAccount,
-                          style: style.c(AppColors.hexF8f4),
+                          style: style.c(AppColors.hexEeeb),
                         ).padRight(10.r),
                         GestureDetector(
                           onTap: () {

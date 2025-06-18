@@ -14,8 +14,8 @@ class AppColors {
   static const Color hex3E3f = Color(0XFF3E3F3F);
 
   // White Smoke and wine
-  static const Color hexF8f4 = Color(0XFFF8F4F3);
-  static const Color hex5c23 = Color(0XFF5C2334);
+  static const Color hexEeeb = Color(0XFFEEEBD9);
+  static const Color hex2824 = Color(0XFF282427);
 
   // Persian Pink and Lavendar Pink
   static const Color hexF792 = Color(0XFFF792CC);

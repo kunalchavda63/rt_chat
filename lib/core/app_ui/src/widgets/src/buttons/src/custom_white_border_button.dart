@@ -30,7 +30,7 @@ class CustomWhiteBorderButton extends StatelessWidget {
           SvgPicture.asset(path ?? AssetIcons.icGoogle),
           CustomWidgets.customText(
             data: buttonTitle ?? '',
-            style: style ?? BaseStyle.s23w900.c(AppColors.hex1ed7),
+            style: style ?? BaseStyle.s23w500.c(AppColors.hex1ed7),
           ),
           SizedBox(),
         ],
