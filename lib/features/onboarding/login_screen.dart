@@ -46,6 +46,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           password: _passController.text.trim(),
           context: context,
         );
+        if(!context.mounted){return;}
+        go(context,RoutesEnum.appEntryPoint.path);
       } on FirebaseAuthException catch (e) {
         debugPrint(e.message);
       }
@@ -188,6 +190,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   });
                                   if (isValid) {
                                     login();
+
                                   }
                                 },
                               ).padH(10.r).padBottom(23.r),

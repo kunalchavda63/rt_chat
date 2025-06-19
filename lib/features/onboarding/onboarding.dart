@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
@@ -13,6 +14,11 @@ class AppEntryPoint extends ConsumerWidget {
 
     return authState.when(
       data: (user) {
+        debugPrint('User : ${user?.email}');
+        debugPrint('User : ${user?.displayName}');
+        debugPrint('User : ${user?.photoURL}');
+        debugPrint('User : ${user?.phoneNumber}');
+        debugPrint('User : ${user?.uid}');
         // Redirect based on user auth state
         Future.microtask(() {
           if (user == null) {
@@ -24,7 +30,7 @@ class AppEntryPoint extends ConsumerWidget {
             if (!context.mounted) {
               return;
             }
-            context.go(RoutesEnum.chatScreen.path);
+            context.go(RoutesEnum.chatScreen.path,extra: user);
           }
         });
 

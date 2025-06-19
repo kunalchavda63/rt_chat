@@ -7,7 +7,9 @@ class ImageProfileUpdate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomWidgets.customAppBar(title: Text('Profile Setup')),
+      appBar: CustomWidgets.customAppBar(
+          title: Text('Profile Setup')),
     );
   }
+
 }

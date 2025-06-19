@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rt_chat/core/app_ui/app_ui.dart';
 import 'package:rt_chat/features/onboarding/onboarding.dart';
 import 'package:rt_chat/features/screens/chat_screen.dart';
 import 'package:rt_chat/features/screens/profile_setup.dart';
 import 'package:rt_chat/features/screens/search_users.dart';
+import 'package:rt_chat/features/screens/settings/settings_screen.dart';
 
 import '../../../../features/screens/screens.dart';
 import 'routes.dart';
@@ -48,7 +50,10 @@ final goRouterConfig = GoRouter(
           routes: [
             GoRoute(
               path: RoutesEnum.chatScreen.path,
-              builder: (context, state) => const ChatScreen(),
+              builder: (context, state) {
+                final user = state.extra as User;
+                return ChatScreen(user: user,);
+              },
             ),
           ],
         ),
@@ -65,6 +70,26 @@ final goRouterConfig = GoRouter(
     GoRoute(
       path: RoutesEnum.searchUser.path,
       builder: (context, state) => const SearchUsers(),
+    ),
+    GoRoute(
+      path: RoutesEnum.newGroup.path,
+      builder: (context, state) => const Placeholder(),
+    ),
+    GoRoute(
+      path: RoutesEnum.newBrodCast.path,
+      builder: (context, state) => const SearchUsers(),
+    ),
+    GoRoute(
+      path: RoutesEnum.linkedDevice.path,
+      builder: (context, state) => const Placeholder(),
+    ),
+    GoRoute(
+      path: RoutesEnum.starred.path,
+      builder: (context, state) => const Placeholder(),
+    ),
+    GoRoute(
+      path: RoutesEnum.settings.path,
+      builder: (context, state) => const SettingsScreen(),
     ),
   ],
 );

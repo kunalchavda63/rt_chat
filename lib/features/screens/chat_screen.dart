@@ -4,6 +4,7 @@ import 'package:rt_chat/core/app_ui/app_ui.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
 import 'package:rt_chat/core/utilities/src/extensions/logger/logger.dart';
 import 'package:rt_chat/core/utilities/src/helper_method.dart';
+import 'package:rt_chat/core/utilities/src/strings.dart';
 import 'package:rt_chat/features/onboarding/auth_sevice/suth_service.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
@@ -25,6 +26,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> menuItems = [
+      AppStrings.newGroup,
+      AppStrings.newBroadCast,
+      AppStrings.linkedDevice,
+      AppStrings.starred,
+      AppStrings.settings
+    ];
+
     final provider = ref.watch(authServiceProvider);
     void logOut() async {
       await provider.signOut(context);
@@ -43,7 +52,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           color: AppColors.hexEeeb,
           alignment: Alignment.center,
           boxShape: BoxShape.circle,
-          child: Text('K', style: BaseStyle.s17w400.c(AppColors.hex2824)),
+          child: CustomWidgets.customText(
+            data: widget.user?.email != null
+                ? widget.user!.email!.trim().substring(0, 1).toUpperCase()
+                : 'C',
+            style: BaseStyle.s17w400.c(AppColors.hex2824),
+          ),
         ).padLeft(20),
         title: Row(
           children: [
@@ -51,6 +65,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               data: widget.user?.displayName ?? 'No Name',
               style: BaseStyle.s17w400.c(AppColors.hexEeeb),
             ),
+            Spacer(),
+            CustomWidgets.customPopUpMenuBtm(
+              items: menuItems,
+              icon: Icon(Icons.more_vert,color: AppColors.hexEeeb,),
+              onSelected: (value){
+                // context.pushNamed()
+              }
+
+            )
           ],
         ),
       ),

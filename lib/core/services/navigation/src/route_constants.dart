@@ -7,7 +7,12 @@ enum RoutesEnum {
   chatScreen('/'),
   callLogsScreen('/'),
   profileSetup('/profileSetup'),
-  searchUser('/searchUser');
+  newGroup('/newGroup'),
+  newBrodCast('/newBrodCast'),
+  linkedDevice('/linkedDevice'),
+  starred('/starred'),
+  searchUser('/searchUser'),
+  settings('/settings');
 
   const RoutesEnum(this.path);
 

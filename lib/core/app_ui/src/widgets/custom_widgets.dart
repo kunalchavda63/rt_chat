@@ -1,3 +1,4 @@
+import 'package:rt_chat/core/app_ui/src/widgets/src/buttons/src/custom_pop_up_menu_btn.dart';
 import 'package:rt_chat/core/app_ui/src/widgets/src/custom_chat_card.dart';
 import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 
@@ -288,4 +289,18 @@ class CustomWidgets {
   static Widget customChatCard({UserModel? user}) {
     return CustomChatCard(userModel: user);
   }
+
+  static Widget customPopUpMenuBtm({
+    List<String>? items,
+    void Function(String value)? onSelected,
+    Icon? icon,
+})
+{
+  return CustomPopupMenuButton(
+      items: items??[],
+      onSelected: onSelected??(v){},
+  icon: icon??Icon(Icons.more_vert)
+  );
+}
+
 }

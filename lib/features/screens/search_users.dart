@@ -50,12 +50,11 @@ class _SearchUsersState extends ConsumerState<SearchUsers> {
         title: Row(
           children: [
             CustomWidgets.customText(
-              data: 'Search User',
+              data: AppStrings.searchUser,
               textAlign: TextAlign.left,
               style: BaseStyle.s20w400.c(AppColors.hexEeeb),
             ),
             Spacer(),
-            // Icon(Icons.menu_outlined, color: AppColors.hexEeeb),
           ],
         ),
       ),
