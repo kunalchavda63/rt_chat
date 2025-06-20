@@ -57,14 +57,7 @@ final goRouterConfig = GoRouter(
             ),
           ],
         ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: RoutesEnum.profileSetup.path,
-              builder: (context, state) => const ImageProfileUpdate(),
-            ),
-          ],
-        ),
+
       ],
     ),
     GoRoute(
@@ -90,6 +83,10 @@ final goRouterConfig = GoRouter(
     GoRoute(
       path: RoutesEnum.settings.path,
       builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: RoutesEnum.profileSetup.path,
+      builder: (context, state) => const ImageProfileUpdate(),
     ),
   ],
 );

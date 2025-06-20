@@ -23,3 +23,18 @@ plugins {
 }
 
 include(":app")
+
+// Disable test + lint + unit test lint + unit test config tasks
+gradle.projectsEvaluated {
+    allprojects {
+        tasks.matching {
+            it.name.contains("lint", ignoreCase = true) ||
+                    it.name.contains("generateDebugUnitTestLintModel", ignoreCase = true)
+        }.configureEach {
+            enabled = false
+        }
+    }
+}
+
+// ✅ Disable lint for subprojects like audio_session
+

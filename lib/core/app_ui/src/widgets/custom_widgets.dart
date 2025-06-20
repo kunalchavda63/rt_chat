@@ -84,8 +84,8 @@ class CustomWidgets {
   }
 
   // Custom Back Button
-  static Widget customCircleBackButton() {
-    return CustomCircleBackButton();
+  static Widget customCircleBackButton({Color? color}) {
+    return CustomCircleBackButton(color: color,);
   }
 
   // Custom Image View

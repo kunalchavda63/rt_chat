@@ -35,16 +35,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     ];
 
     final provider = ref.watch(authServiceProvider);
-    void logOut() async {
-      await provider.signOut(context);
-      logger.i('Log Out User');
-      if (!context.mounted) return;
-      push(context, RoutesEnum.appEntryPoint.path);
-    }
 
     return Scaffold(
       appBar: CustomWidgets.customAppBar(
-        bgColor: AppColors.hex2824,
+          bgColor: AppColors.hex2824,
         leading: CustomWidgets.customContainer(
           onTap: () {
             push(context, RoutesEnum.profileSetup.path);
@@ -70,6 +64,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               items: menuItems,
               icon: Icon(Icons.more_vert,color: AppColors.hexEeeb,),
               onSelected: (value){
+                context.push(RoutesEnum.settings.path);
                 // context.pushNamed()
               }
 
