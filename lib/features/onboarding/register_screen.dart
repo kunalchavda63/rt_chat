@@ -2,8 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rt_chat/core/app_ui/app_ui.dart';
+import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 import 'package:rt_chat/core/utilities/utils.dart';
 import 'package:rt_chat/features/onboarding/auth_sevice/suth_service.dart';
+
+import '../../core/services/navigation/router.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -41,15 +44,23 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     final provider = ref.watch(authServiceProvider);
     void register() async {
       try {
-        await provider.createAccount(
+        final credential = await provider.createAccount(
           context: context,
-          email: _emailController.text.trim(),
-          password: _passController.text.trim(),
+          user: UserModel(
+            email: _emailController.text.trim(),
+            password: _passController.text.trim(),
+            displayName: _userIdController.text.trim(),
+          ),
         );
+
+        if (credential != null && context.mounted) {
+          go(context, RoutesEnum.appEntryPoint.path); // ✅ Only navigate if success
+        }
       } on FirebaseAuthException catch (e) {
-        logger.e(e.message);
+        debugPrint(e.message);
       }
     }
+
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -112,6 +123,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     CustomWidgets.customTextField(
                       controller: _userIdController,
                       textInputAction: TextInputAction.next,
+                      textCapitalization: TextCapitalization.words,
                       textInputType: TextInputType.emailAddress,
                       focusNode: _userIdFocus,
                       fillColor: AppColors.hexEeeb,
@@ -179,7 +191,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       onTap: () {
                         if (_form.currentState!.validate()) {
                           register();
-                          logger.i('Created Succefully');
                         }
                       },
                       label: AppStrings.createNewAccount,

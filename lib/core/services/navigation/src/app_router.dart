@@ -41,25 +41,33 @@ final goRouterConfig = GoRouter(
       },
     ),
     StatefulShellRoute.indexedStack(
-      builder:
-          (context, state, navigationShell) =>
-              Screens(navigationShell: navigationShell),
-
+      builder: (context, state, navigationShell) =>
+          Screens(navigationShell: navigationShell),
       branches: [
+        /// 🟢 Branch 0 → Chats
         StatefulShellBranch(
           routes: [
             GoRoute(
               path: RoutesEnum.chatScreen.path,
               builder: (context, state) {
                 final user = state.extra as User;
-                return ChatScreen(user: user,);
+                return ChatScreen(user: user);
               },
             ),
           ],
         ),
 
-      ],
-    ),
+        /// 🔵 Branch 1 → Calls
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RoutesEnum.callLogsScreen.path,
+              builder: (context, state) => const Placeholder(),
+            ),
+          ],
+        ),
+      ],),
+
     GoRoute(
       path: RoutesEnum.searchUser.path,
       builder: (context, state) => const SearchUsers(),

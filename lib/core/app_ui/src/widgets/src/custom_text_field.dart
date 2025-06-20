@@ -45,13 +45,14 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textCapitalization: textCapitalization??TextCapitalization.none,
+
       focusNode: focusNode,
       keyboardType: textInputType,
       style: style,
       expands: isExpand ?? false,
       controller: controller,
       cursorHeight: 20,
-
       textInputAction: textInputAction,
       decoration: InputDecoration(
         border: border,

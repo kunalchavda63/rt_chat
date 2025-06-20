@@ -5,7 +5,7 @@ enum RoutesEnum {
   register('/register'),
   forgot('/forgot'),
   chatScreen('/'),
-  callLogsScreen('/'),
+  callLogsScreen('/calls'),
   profileSetup('/profileSetup'),
   newGroup('/newGroup'),
   newBrodCast('/newBrodCast'),

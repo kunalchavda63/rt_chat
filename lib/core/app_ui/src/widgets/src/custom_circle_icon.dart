@@ -1,0 +1,37 @@
+import '../../../app_ui.dart';
+
+class CustomCircleIcon extends StatelessWidget {
+  final double? h;
+  final double? w;
+  final Border? border;
+  final Color? bgColor;
+  final IconData iconData;
+  final double? iconSize;
+  final Color? iconColor;
+  final VoidCallback? onTap;
+
+  const CustomCircleIcon({
+    super.key,
+    this.h,
+    this.w,
+    required this.iconData,
+    required this.iconSize,
+    this.iconColor,
+    this.border,
+    this.bgColor,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomWidgets.customContainer(
+      onTap: onTap,
+      h: h,
+      w: w,
+      boxShape: BoxShape.circle,
+      border: border,
+      color: bgColor,
+      child: Icon(iconData, color: iconColor, size: iconSize),
+    );
+  }
+}

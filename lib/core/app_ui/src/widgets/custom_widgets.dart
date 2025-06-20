@@ -1,5 +1,6 @@
 import 'package:rt_chat/core/app_ui/src/widgets/src/buttons/src/custom_pop_up_menu_btn.dart';
 import 'package:rt_chat/core/app_ui/src/widgets/src/custom_chat_card.dart';
+import 'package:rt_chat/core/app_ui/src/widgets/src/custom_circle_icon.dart';
 import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 
 import 'widgets.dart';
@@ -294,13 +295,36 @@ class CustomWidgets {
     List<String>? items,
     void Function(String value)? onSelected,
     Icon? icon,
-})
-{
-  return CustomPopupMenuButton(
-      items: items??[],
-      onSelected: onSelected??(v){},
-  icon: icon??Icon(Icons.more_vert)
-  );
-}
+}){
+    return CustomPopupMenuButton(
+        items: items??[],
+        onSelected: onSelected??(v){},
+        icon: icon??Icon(Icons.more_vert)
+    );
+  }
+
+
+  static Widget customCircleIcon({
+    double? h,
+    double? w,
+    Border? border,
+    Color? bgColor,
+    IconData? iconData,
+    double? iconSize,
+    Color? iconColor,
+    VoidCallback? onTap
+}){
+return CustomCircleIcon(
+  h: h,
+  w: w,
+  border: border,
+  bgColor: bgColor,
+  iconData: iconData??Icons.person,
+  iconSize: iconSize,
+  iconColor: iconColor,
+  onTap: onTap,
+);
+  }
+
 
 }

@@ -40,28 +40,25 @@ class AuthService {
   }
 
   Future<UserCredential?> createAccount({
-    required String email,
-    required String password,
+    required UserModel user,
     required BuildContext context,
   }) async {
     try {
       final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: user.email,
+        password: user.password,
       );
 
       final uid = userCredential.user!.uid;
 
-      // Optional: You can set displayName here after creation
-      // await userCredential.user!.updateDisplayName("Your Name");
 
       final userModel = UserModel(
         uid: uid,
-        email: email,
-        displayName: userCredential.user!.displayName ?? '', // Optional
-        phone: userCredential.user!.phoneNumber ?? '',
-        photoUrl: userCredential.user!.photoURL ?? '',
-        role: 'guest', // You can update this based on your logic
+        email: user.email,
+        displayName: user.displayName ?? '', // Optional
+        phone: user.phone ?? '',
+        photoUrl: user.photoUrl ?? '',
+        role: user.role??'guest', password: user.password, // You can update this based on your logic
       );
 
       await firestore.collection("users").doc(uid).set(userModel.toJson());

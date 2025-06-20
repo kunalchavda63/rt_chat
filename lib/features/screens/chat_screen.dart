@@ -2,10 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/app_ui/app_ui.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
-import 'package:rt_chat/core/utilities/src/extensions/logger/logger.dart';
-import 'package:rt_chat/core/utilities/src/helper_method.dart';
-import 'package:rt_chat/core/utilities/src/strings.dart';
-import 'package:rt_chat/features/onboarding/auth_sevice/suth_service.dart';
+
+import '../../core/utilities/utils.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   final User? user;
@@ -34,7 +32,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       AppStrings.settings
     ];
 
-    final provider = ref.watch(authServiceProvider);
+    // final provider = ref.watch(authServiceProvider);
 
     return Scaffold(
       appBar: CustomWidgets.customAppBar(

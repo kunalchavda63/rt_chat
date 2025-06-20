@@ -22,7 +22,7 @@ class Screens extends StatelessWidget {
                 .toList(),
 
         selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: navigationShell.goBranch,
+        onDestinationSelected: (index)=>navigationShell.goBranch(index),
         indicatorColor: Theme.of(context).primaryColor,
       ),
     );
@@ -37,5 +37,5 @@ class Destination {
 
 const destinations = [
   Destination(label: 'Chats', icon: Icons.chat),
-  Destination(label: 'Chats', icon: Icons.call_sharp),
+  Destination(label: 'Calls', icon: Icons.call_sharp),
 ];

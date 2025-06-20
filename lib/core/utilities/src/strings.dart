@@ -16,6 +16,7 @@ class AppStrings {
   static const String confirmPassword = 'Confirm Password';
   static const String alreadyHaveAnAccount = 'Already have an account?';
   static const String login = 'Log in';
+  static const String logout = 'Log Out';
   static const String forgotPara =
       "Don't worry! it happens. please enter the mobile number which is associated your account";
   static const String send = 'Send';
@@ -46,4 +47,6 @@ class AppStrings {
   static const String edit = 'Edit';
   static const String profilePhoto = 'Profile Photo';
   static const String lists = 'Lists';
+  static const String enterAValidEmail = 'Enter a valid email Address';
+  static const String emailCannotBeEmpty = 'Email cannot be empty';
 }
