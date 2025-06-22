@@ -49,4 +49,29 @@ class AppStrings {
   static const String lists = 'Lists';
   static const String enterAValidEmail = 'Enter a valid email Address';
   static const String emailCannotBeEmpty = 'Email cannot be empty';
+  static const String passwordCannotBeEmpty = 'Password cannot be empty';
+  static const String passwordMustBeAtLest6Characters = 'Password must be at least 6 characters';
+  static const String nameCannotBeEmpty = 'Name cannot be empty';
+  static const String nameCannotBeAtLeast2Characters = 'Name must be at least 2 characters';
+  static const String male = 'Male';
+  static const String female = 'Female';
+  static const String others = 'Others';
+  static const String pleaseEnterMaleOrFemale = 'Please enter male, female, or other';
+  static const String genderCannotBeEmpty = 'Gender cannot be empty';
+  static const String pleaseConfirmUPassword = 'Please confirm your password';
+  static const String passwordDoNotMatch = 'Passwords do not match';
+  static const String discoverUsers = 'Discover Users';
+  static const String noName = 'No Name';
+  static const String camera = 'Camera';
+  static const String gallery = 'Gallery';
+  static const String about = 'About';
+  static const String phone = 'Phone';
+  static const String link = 'Link';
+  static const String yourName = 'Your name';
+  static const String name = 'Name';
+  static const String peopleWillSee = "People will see this name if you interact with them and they don't have you saved as a contact";
+  static const String save = 'Save';
+
+
+
 }

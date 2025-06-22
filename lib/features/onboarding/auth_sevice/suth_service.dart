@@ -47,9 +47,11 @@ class AuthService {
       final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
         email: user.email,
         password: user.password,
+
       );
 
       final uid = userCredential.user!.uid;
+
 
 
       final userModel = UserModel(
@@ -118,6 +120,7 @@ class AuthService {
     }
   }
 
+
   Future<void> sendEmailVerificationLink(BuildContext context) async {
     try {
       await firebaseAuth.currentUser?.sendEmailVerification();
@@ -148,6 +151,7 @@ class AuthService {
     }
   }
 
+
   Future<void> resetPasswordFromCurrentPassword({
     required String currentPassword,
     required String newPassword,
@@ -167,9 +171,31 @@ class AuthService {
     }
   }
 
+  Future<void> reloadUser() async{
+    await firebaseAuth.currentUser?.reload();
+  }
+
+
+  // Get Recent Message
+
   // Helper to extract readable error messages
   String _extractMessage(Object e) {
     if (e is FirebaseAuthException) return e.message ?? "Unknown error";
     return e.toString();
   }
 }
+
+
+class ChatUser {
+  final UserModel user;
+  final String lastMessage;
+  final DateTime timestamp;
+
+  ChatUser({
+    required this.user,
+    required this.lastMessage,
+    required this.timestamp,
+  });
+}
+
+

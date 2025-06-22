@@ -1,15 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rt_chat/core/app_ui/app_ui.dart';
-import 'package:rt_chat/core/utilities/src/helper_method.dart';
-import 'package:rt_chat/core/utilities/src/strings.dart';
-import 'package:rt_chat/core/utilities/src/validator.dart';
+import 'package:rt_chat/core/services/navigation/router.dart';
+import 'package:rt_chat/core/utilities/utils.dart';
+import 'package:rt_chat/features/screens/chat_room/chat_room_screen.dart';
 import 'package:rt_chat/features/screens/provider/provider.dart';
 
 class SearchUsers extends ConsumerStatefulWidget {
-  final User? user;
-  const SearchUsers({this.user, super.key});
+  const SearchUsers({super.key});
 
   @override
   ConsumerState<SearchUsers> createState() => _SearchUsersState();
@@ -19,13 +16,26 @@ class _SearchUsersState extends ConsumerState<SearchUsers> {
   @override
   void initState() {
     super.initState();
+
+    // Initial fetch
+    Future.microtask(() {
+      ref.read(searchUserProvider.notifier).fetchAllUsers();
+    });
+
+    // Search input listener
     _searchController.addListener(() {
       final query = _searchController.text.trim();
-      if (query.isNotEmpty) {
+
+      if (query.isEmpty) {
+        // 👇 Fetch all users if input is empty
+        ref.read(searchUserProvider.notifier).fetchAllUsers();
+      } else {
+        // 👇 Search users
         ref.read(searchUserProvider.notifier).searchUsers(query);
       }
     });
   }
+
 
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocus = FocusNode();
@@ -79,13 +89,14 @@ class _SearchUsersState extends ConsumerState<SearchUsers> {
           ).padH(10).padBottom(10.r).padTop(21.r),
 
           CustomWidgets.customText(
-            data: 'Discover Users',
+            data: AppStrings.discoverUsers,
             style: BaseStyle.s20w400.c(AppColors.hex2824),
           ).padLeft(10),
           searchState.when(
             data:
                 (userList) => Expanded(
                   child: ListView.builder(
+                    padding: EdgeInsets.zero,
                     itemCount: userList.length,
                     itemBuilder: (context, index) {
                       final user = userList[index];
@@ -101,34 +112,29 @@ class _SearchUsersState extends ConsumerState<SearchUsers> {
                       }
 
                       return CustomWidgets.customContainer(
+                        onTap: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context){
+                            return ChatRoomScreen(displayName:user.displayName!,receiverEmail: user.email, receiverId:user.uid!);
+                          }));
+                          // context.push(RoutesEnum.chatRoomScreen.path,extra: user);
+                        },
                         h: 60.r,
-                        color: AppColors.hex2824.withAlpha(100),
+                        color: AppColors.hex2824.withAlpha(50),
                         borderRadius: BorderRadius.circular(15.r),
                         child: Row(
                           children: [
-                            user.photoUrl != null
-                                ? CustomWidgets.customImageView(
-                                  path: user.photoUrl ?? '',
-                                  sourceType: ImageType.network,
-                                )
-                                : CustomWidgets.customContainer(
-                                  h: 50.r,
-                                  w: 50.r,
-                                  color: AppColors.hexEeeb,
-                                  border: Border.all(
-                                    color: AppColors.hex2824,
-                                    width: 2,
-                                  ),
-                                  boxShape: BoxShape.circle,
-                                  child: Icon(Icons.person),
-                                ).padLeft(5),
+                           CustomWidgets.customCircleIcon(
+                             h: 35.r,
+                             w: 35.r,
+                             bgColor: AppColors.hexEeeb
+                           ).padLeft(20.r),
                             SizedBox(width: 10.r),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CustomWidgets.customText(
-                                  data: user.displayName ?? 'No Name',
+                                  data: user.displayName ?? AppStrings.noName,
                                   style: BaseStyle.s17w400
                                       .c(AppColors.hex2824)
                                       .w(700),

@@ -21,4 +21,7 @@ abstract class UserModel with _$UserModel {
   factory UserModel.fromFirestore(Map<String, dynamic> json, String docId) {
     return UserModel.fromJson({...json, 'uid': docId});
   }
+  factory UserModel.fromMap(Map<String, dynamic> map) =>
+      UserModel.fromJson(map); // 👈 optional alias
+
 }

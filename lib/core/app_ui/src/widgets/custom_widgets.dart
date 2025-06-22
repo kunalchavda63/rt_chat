@@ -26,6 +26,8 @@ class CustomWidgets {
     TextStyle? labelStyle,
     TextStyle? hintStyle,
     FocusNode? focusNode,
+    String? initialValue,
+    int? maxLength
   }) {
     return CustomTextField(
       focusNode: focusNode,
@@ -46,6 +48,8 @@ class CustomWidgets {
       fillColor: fillColor,
       filled: filled,
       style: style,
+      maxLength: maxLength,
+
     );
   }
 
@@ -293,13 +297,28 @@ class CustomWidgets {
 
   static Widget customPopUpMenuBtm({
     List<String>? items,
-    void Function(String value)? onSelected,
+  AnimationStyle? animationStyle,
+  Color? boxColor,
+  Offset? offset,
+  Widget? eachChild,
+    BorderRadius?borderRadius,
+  PopupMenuPosition? popupMenuPosition,
+    ShapeBorder? shapeBorder,
+
+
+  void Function(String value)? onSelected,
     Icon? icon,
 }){
     return CustomPopupMenuButton(
-        items: items??[],
+        items: items?? const [],
+        animationStyle: animationStyle,
+        boxColor: boxColor,
+        offset: offset,
+        eachChild: eachChild,
+        popupMenuPosition: popupMenuPosition,
         onSelected: onSelected??(v){},
-        icon: icon??Icon(Icons.more_vert)
+        icon: icon??Icon(Icons.more_vert),
+      shapeBorder: shapeBorder,
     );
   }
 

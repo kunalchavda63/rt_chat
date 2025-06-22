@@ -1,8 +1,8 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rt_chat/core/app_ui/app_ui.dart';
-import 'package:rt_chat/core/utilities/utils.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+
+import '../../core/app_ui/app_ui.dart';
+import '../../core/utilities/utils.dart';
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({super.key});

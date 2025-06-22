@@ -8,3 +8,4 @@ export 'src/ui_extension.dart';
 export 'src/widgets/custom_widgets.dart';
 export 'src/widgets/widgets.dart';
 export 'src/toast_helper.dart';
+export 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -51,6 +51,8 @@ dependencies:
   freezed_annotation: ^3.0.0
   json_annotation: ^4.9.0
   image_picker: ^1.1.2
+  firebase_storage: ^12.4.7
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:

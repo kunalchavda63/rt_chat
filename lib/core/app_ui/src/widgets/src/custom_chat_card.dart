@@ -1,4 +1,3 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 
 import '../../../app_ui.dart';

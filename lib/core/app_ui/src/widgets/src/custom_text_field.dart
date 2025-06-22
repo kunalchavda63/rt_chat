@@ -19,6 +19,8 @@ class CustomTextField extends StatelessWidget {
   final TextStyle? hintStyle;
   final TextStyle? labelStyle;
   final FocusNode? focusNode;
+  final int? maxLength;
+  final String? initialValue;
 
   const CustomTextField({
     super.key,
@@ -40,13 +42,14 @@ class CustomTextField extends StatelessWidget {
     this.hintStyle,
     this.labelStyle,
     this.focusNode,
+    this.maxLength, this.initialValue,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       textCapitalization: textCapitalization??TextCapitalization.none,
-
+      initialValue: initialValue,
       focusNode: focusNode,
       keyboardType: textInputType,
       style: style,
@@ -54,6 +57,7 @@ class CustomTextField extends StatelessWidget {
       controller: controller,
       cursorHeight: 20,
       textInputAction: textInputAction,
+      maxLength: maxLength,
       decoration: InputDecoration(
         border: border,
         focusedErrorBorder: border,
@@ -71,6 +75,7 @@ class CustomTextField extends StatelessWidget {
         fillColor: fillColor,
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
+
       ),
       validator: validator,
     );

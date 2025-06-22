@@ -1,8 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rt_chat/core/app_ui/app_ui.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
 import 'package:rt_chat/core/utilities/src/helper_method.dart';
 import 'package:rt_chat/core/utilities/src/strings.dart';

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
 
@@ -13,11 +12,11 @@ class AppEntryPoint extends ConsumerWidget {
 
     return authState.when(
       data: (user) {
-        debugPrint('User : ${user?.email}');
-        debugPrint('User : ${user?.displayName}');
-        debugPrint('User : ${user?.photoURL}');
-        debugPrint('User : ${user?.phoneNumber}');
-        debugPrint('User : ${user?.uid}');
+        debugPrint('User Email : ${user?.email}');
+        debugPrint('User DisplayName: ${user?.displayName}');
+        debugPrint('User PhotoUrl: ${user?.photoURL}');
+        debugPrint('User PhoneNumber: ${user?.phoneNumber}');
+        debugPrint('User UID: ${user?.uid}');
         // Redirect based on user auth state
         Future.microtask(() {
           if (user == null) {

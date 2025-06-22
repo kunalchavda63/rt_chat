@@ -1,4 +1,3 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rt_chat/core/app_ui/app_ui.dart';
 import 'package:rt_chat/core/utilities/src/strings.dart';
 

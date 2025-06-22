@@ -1,16 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:rt_chat/core/app_ui/app_ui.dart';
-import 'package:rt_chat/features/onboarding/onboarding.dart';
-import 'package:rt_chat/features/screens/chat_screen.dart';
-import 'package:rt_chat/features/screens/profile_setup.dart';
-import 'package:rt_chat/features/screens/search_users.dart';
-import 'package:rt_chat/features/screens/settings/settings_screen.dart';
 
-import '../../../../features/screens/screens.dart';
+
+
+
+
+import 'package:rt_chat/core/models/src/user_model/user_model.dart';
+import 'package:rt_chat/features/screens/chat_room/chat_room_screen.dart';
+
 import 'routes.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final goRouterConfig = GoRouter(
   navigatorKey: _rootNavigatorKey,
@@ -50,8 +48,7 @@ final goRouterConfig = GoRouter(
             GoRoute(
               path: RoutesEnum.chatScreen.path,
               builder: (context, state) {
-                final user = state.extra as User;
-                return ChatScreen(user: user);
+                return ChatScreen();
               },
             ),
           ],
@@ -94,7 +91,33 @@ final goRouterConfig = GoRouter(
     ),
     GoRoute(
       path: RoutesEnum.profileSetup.path,
-      builder: (context, state) => const ImageProfileUpdate(),
+      builder: (context, state) {
+        return  ImageProfileUpdate(
+        );
+      },
     ),
+    GoRoute(
+      path: RoutesEnum.editName.path,
+      builder: (context, state) {
+        final user = state.extra as String;
+        return  EditName(user:user);
+      },
+    ),
+    GoRoute(
+      path: RoutesEnum.editAbout.path,
+      builder: (context, state) => const EditAbout(),
+    ),
+    GoRoute(
+        path:RoutesEnum.chatRoomScreen.path,
+      builder: (context,state) {
+          final user = state.extra as UserModel;
+        return  ChatRoomScreen(
+          receiverEmail: user.email,
+          receiverId: user.uid!,
+          displayName: user.displayName??'',
+        );
+      }
+    )
+
   ],
 );
