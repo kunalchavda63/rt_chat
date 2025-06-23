@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
 import 'package:rt_chat/core/utilities/utils.dart';
 

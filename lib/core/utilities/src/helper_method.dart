@@ -99,7 +99,6 @@ void setStatusBarDarkStyle() {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: AppColors.hex2824,
-
       statusBarIconBrightness: Brightness.light, // Light icons for dark bg
       statusBarBrightness: Brightness.dark, // iOS
       systemNavigationBarColor: AppColors.hex2824, // Replace with your color

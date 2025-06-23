@@ -1,18 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 import 'package:rt_chat/core/utilities/src/extensions/logger/logger.dart';
 import '../../../core/app_ui/app_ui.dart'; // Your toast file
 
-final authStateProvider = StreamProvider<User?>((ref) {
-  return FirebaseAuth.instance.authStateChanges();
-});
-
-final authServiceProvider = Provider<AuthService>((ref) {
-  return AuthService();
-});
 
 class AuthService {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;

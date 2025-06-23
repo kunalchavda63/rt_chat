@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
+import 'package:rt_chat/features/onboarding/provider/provider.dart';
 
-import 'auth_sevice/suth_service.dart'; // your authStateProvider
 
 class AppEntryPoint extends ConsumerWidget {
   const AppEntryPoint({super.key});

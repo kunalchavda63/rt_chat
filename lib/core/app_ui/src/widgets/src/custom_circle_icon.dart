@@ -9,6 +9,7 @@ class CustomCircleIcon extends StatelessWidget {
   final double? iconSize;
   final Color? iconColor;
   final VoidCallback? onTap;
+  final EdgeInsets? padding;
 
   const CustomCircleIcon({
     super.key,
@@ -19,7 +20,7 @@ class CustomCircleIcon extends StatelessWidget {
     this.iconColor,
     this.border,
     this.bgColor,
-    this.onTap,
+    this.onTap, this.padding,
   });
 
   @override
@@ -28,6 +29,7 @@ class CustomCircleIcon extends StatelessWidget {
       onTap: onTap,
       h: h,
       w: w,
+      padding: padding??EdgeInsets.all(8.r),
       boxShape: BoxShape.circle,
       border: border,
       color: bgColor,

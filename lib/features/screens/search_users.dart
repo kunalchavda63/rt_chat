@@ -13,6 +13,8 @@ class SearchUsers extends ConsumerStatefulWidget {
 }
 
 class _SearchUsersState extends ConsumerState<SearchUsers> {
+  late Size size;
+  late ThemeData theme;
   @override
   void initState() {
     super.initState();
@@ -35,7 +37,13 @@ class _SearchUsersState extends ConsumerState<SearchUsers> {
       }
     });
   }
+@override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    theme = Theme.of(context);
+    size = MediaQuery.of(context).size;
 
+  }
 
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocus = FocusNode();
@@ -50,19 +58,19 @@ class _SearchUsersState extends ConsumerState<SearchUsers> {
 
     return Scaffold(
       appBar: CustomWidgets.customAppBar(
-        bgColor: AppColors.hex2824,
+        bgColor: theme.scaffoldBackgroundColor,
         leading: CustomWidgets.customContainer(
           onTap: () => back(context),
           h: 35.r,
           w: 35.r,
-          child: Icon(Icons.arrow_back, color: AppColors.hexEeeb),
+          child: Icon(Icons.arrow_back, color: theme.primaryColor),
         ),
         title: Row(
           children: [
             CustomWidgets.customText(
               data: AppStrings.searchUser,
               textAlign: TextAlign.left,
-              style: BaseStyle.s20w400.c(AppColors.hexEeeb),
+              style: BaseStyle.s20w400.c(theme.primaryColor),
             ),
             Spacer(),
           ],
@@ -74,23 +82,22 @@ class _SearchUsersState extends ConsumerState<SearchUsers> {
           CustomWidgets.customTextField(
             validator: validateName,
             controller: _searchController,
-            textInputAction: TextInputAction.next,
             textInputType: TextInputType.emailAddress,
             focusNode: _searchFocus,
-            fillColor: AppColors.hexEeeb,
+            fillColor: theme.scaffoldBackgroundColor,
             filled: true,
             label: AppStrings.email,
-            style: style,
-            labelStyle: style,
+            style: style.c(theme.primaryColor),
+            labelStyle: style.c(theme.primaryColor),
             border: OutlinedInputBorder(
-              borderSide: BorderSide(color: AppColors.hexEeeb),
+              borderSide: BorderSide(color:theme.primaryColor),
               borderRadius: BorderRadius.circular(15),
             ),
           ).padH(10).padBottom(10.r).padTop(21.r),
 
           CustomWidgets.customText(
             data: AppStrings.discoverUsers,
-            style: BaseStyle.s20w400.c(AppColors.hex2824),
+            style: BaseStyle.s20w400.c(theme.primaryColor),
           ).padLeft(10),
           searchState.when(
             data:
@@ -100,7 +107,6 @@ class _SearchUsersState extends ConsumerState<SearchUsers> {
                     itemCount: userList.length,
                     itemBuilder: (context, index) {
                       final user = userList[index];
-
                       // ✅ Pagination trigger
                       if (index == userList.length - 1) {
                         ref
@@ -111,43 +117,14 @@ class _SearchUsersState extends ConsumerState<SearchUsers> {
                             );
                       }
 
-                      return CustomWidgets.customContainer(
+                      return InkWell(
                         onTap: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context){
-                            return ChatRoomScreen(displayName:user.displayName!,receiverEmail: user.email, receiverId:user.uid!);
-                          }));
-                          // context.push(RoutesEnum.chatRoomScreen.path,extra: user);
+                          context.push(RoutesEnum.chatRoomScreen.path,extra: user);
                         },
-                        h: 60.r,
-                        color: AppColors.hex2824.withAlpha(50),
-                        borderRadius: BorderRadius.circular(15.r),
-                        child: Row(
-                          children: [
-                           CustomWidgets.customCircleIcon(
-                             h: 35.r,
-                             w: 35.r,
-                             bgColor: AppColors.hexEeeb
-                           ).padLeft(20.r),
-                            SizedBox(width: 10.r),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomWidgets.customText(
-                                  data: user.displayName ?? AppStrings.noName,
-                                  style: BaseStyle.s17w400
-                                      .c(AppColors.hex2824)
-                                      .w(700),
-                                ),
-                                CustomWidgets.customText(
-                                  data: user.email,
-                                  style: BaseStyle.s14w500.c(AppColors.hex2824),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ).padH(10.r).padV(10);
+                        child: CustomWidgets.customChatCard(
+
+                            user: user).padH(20.r).padV(10.r),
+                      );
                     },
                   ),
                 ),

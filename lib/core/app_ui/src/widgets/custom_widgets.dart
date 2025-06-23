@@ -331,7 +331,8 @@ class CustomWidgets {
     IconData? iconData,
     double? iconSize,
     Color? iconColor,
-    VoidCallback? onTap
+    VoidCallback? onTap,
+    EdgeInsets? padding
 }){
 return CustomCircleIcon(
   h: h,
@@ -341,6 +342,7 @@ return CustomCircleIcon(
   iconData: iconData??Icons.person,
   iconSize: iconSize,
   iconColor: iconColor,
+  padding: padding,
   onTap: onTap,
 );
   }

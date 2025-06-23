@@ -2,8 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 import 'package:rt_chat/core/utilities/utils.dart';
-import 'package:rt_chat/features/onboarding/auth_sevice/suth_service.dart';
-
+import 'package:rt_chat/features/onboarding/provider/provider.dart';
 import '../../core/services/navigation/router.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
@@ -23,23 +22,29 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final FocusNode _userIdFocus = FocusNode();
   final FocusNode _passFocus = FocusNode();
   final FocusNode _confirmPassFocus = FocusNode();
-  final style = BaseStyle.s17w400
-      .c(AppColors.hex2824)
-      .family(FontFamily.poppins)
-      .line(0.9);
 
   late Size size;
+  late ThemeData theme;
+  late bool isDarkMode;
+  late Color bgColor;
+  late Color textColor;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     setStatusBarDarkStyle();
     size = MediaQuery.of(context).size;
+    theme = Theme.of(context);
+    isDarkMode = theme.brightness == Brightness.dark;
+    bgColor = isDarkMode ? AppColors.hex2824 : AppColors.hexEeeb;
+    textColor = isDarkMode ? AppColors.hexEeeb : AppColors.hex2824;
   }
 
   @override
   Widget build(BuildContext context) {
+    final style = BaseStyle.s17w400.c(textColor).family(FontFamily.poppins).line(0.9);
     final provider = ref.watch(authServiceProvider);
+
     void register() async {
       try {
         final credential = await provider.createAccount(
@@ -52,22 +57,22 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         );
 
         if (credential != null && context.mounted) {
-          go(context, RoutesEnum.appEntryPoint.path); // ✅ Only navigate if success
+          go(context, RoutesEnum.appEntryPoint.path);
         }
       } on FirebaseAuthException catch (e) {
         debugPrint(e.message);
       }
     }
 
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
-      appBar: PreferredSize(
-        preferredSize: Size.zero,
-        child: AppBar(backgroundColor: AppColors.hex2824),
+      appBar: CustomWidgets.customAppBar(
+        height: 0,
+        bgColor: bgColor,
+        bottomOpacity: 0,
+        elevation: 0,
       ),
-
       body: Form(
         key: _form,
         child: Stack(
@@ -76,7 +81,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             CustomWidgets.customContainer(
               h: size.height,
               w: size.width,
-              color: AppColors.hexEeeb,
+              color: theme.brightness == Brightness.light ? AppColors.hex7777.withAlpha(20):theme.primaryColor,
               child: Stack(
                 children: [
                   Opacity(
@@ -94,8 +99,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 ],
               ),
             ),
-
-            // Bottom Card
             CustomWidgets.customAnimationWrapper(
               animationType: AnimationType.fade,
               duration: const Duration(seconds: 2),
@@ -103,7 +106,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               child: CustomWidgets.customContainer(
                 h: size.height / 1.17,
                 w: size.width,
-                color: AppColors.hex2824,
+                color: bgColor,
                 padding: EdgeInsets.symmetric(horizontal: 10.r),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
@@ -114,77 +117,18 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   children: [
                     CustomWidgets.customText(
                       data: AppStrings.signUp,
-                      style: BaseStyle.s50w400
-                          .c(AppColors.hexEeeb)
-                          .family(FontFamily.poppins),
+                      style: BaseStyle.s50w400.c(textColor).family(FontFamily.poppins),
                     ).padLeft(10.r).padBottom(50.r),
-                    CustomWidgets.customTextField(
-                      controller: _userIdController,
-                      textInputAction: TextInputAction.next,
-                      textCapitalization: TextCapitalization.words,
-                      textInputType: TextInputType.emailAddress,
-                      focusNode: _userIdFocus,
-                      fillColor: AppColors.hexEeeb,
-                      filled: true,
-                      label: AppStrings.userid,
-                      style: style,
-                      labelStyle: style,
-                      border: OutlinedInputBorder(
-                        borderSide: BorderSide(color: AppColors.hexEeeb),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ).padH(10).padBottom(20.r),
-                    CustomWidgets.customTextField(
-                      validator: validateEmail,
-                      controller: _emailController,
-                      textInputAction: TextInputAction.next,
-                      textInputType: TextInputType.emailAddress,
-                      focusNode: _emailFocus,
-                      fillColor: AppColors.hexEeeb,
-                      filled: true,
-                      label: AppStrings.email,
-                      style: style,
-                      labelStyle: style,
-                      border: OutlinedInputBorder(
-                        borderSide: BorderSide(color: AppColors.hexEeeb),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ).padH(10).padBottom(20.r),
-                    CustomWidgets.customTextField(
-                      validator: validatePassword,
-                      controller: _passController,
-                      textInputAction: TextInputAction.next,
-                      textInputType: TextInputType.emailAddress,
-                      focusNode: _passFocus,
-                      fillColor: AppColors.hexEeeb,
-                      filled: true,
-                      label: AppStrings.password,
-                      style: style,
-                      labelStyle: style,
-                      border: OutlinedInputBorder(
-                        borderSide: BorderSide(color: AppColors.hexEeeb),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ).padH(10).padBottom(20.r),
-                    CustomWidgets.customTextField(
-                      validator:
-                          (val) => confirmPasswordValidator(
-                            val,
-                            _passController.text.trim(),
-                          ),
-                      controller: _confirmPassController,
-                      textInputType: TextInputType.visiblePassword,
-                      focusNode: _confirmPassFocus,
-                      fillColor: AppColors.hexEeeb,
-                      filled: true,
-                      label: AppStrings.confirmPassword,
-                      style: style,
-                      labelStyle: style,
-                      border: OutlinedInputBorder(
-                        borderSide: BorderSide(color: AppColors.hexEeeb),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ).padH(10).padBottom(20.r),
+                    buildField(_userIdController, _userIdFocus, AppStrings.userid, style),
+                    buildField(_emailController, _emailFocus, AppStrings.email, style, validator: validateEmail),
+                    buildField(_passController, _passFocus, AppStrings.password, style, validator: validatePassword),
+                    buildField(
+                      _confirmPassController,
+                      _confirmPassFocus,
+                      AppStrings.confirmPassword,
+                      style,
+                      validator: (val) => confirmPasswordValidator(val, _passController.text.trim()),
+                    ),
                     CustomWidgets.customButton(
                       onTap: () {
                         if (_form.currentState!.validate()) {
@@ -193,27 +137,23 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       },
                       label: AppStrings.createNewAccount,
                     ).padH(10.r),
-                    Spacer(),
+                    const Spacer(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomWidgets.customText(
                           data: AppStrings.alreadyHaveAnAccount,
-                          style: style.c(AppColors.hexEeeb),
+                          style: style,
                         ).padRight(10.r),
                         GestureDetector(
-                          onTap: () {
-                            back(context);
-                          },
+                          onTap: () => back(context),
                           child: CustomWidgets.customText(
                             data: AppStrings.login,
-                            style: style.c(AppColors.hex4fc9),
+                            style: style.c(AppColors.hex7777),
                           ),
                         ),
                       ],
-                    ).padBottom(
-                      MediaQuery.of(context).viewPadding.bottom + 47.r,
-                    ),
+                    ).padBottom(MediaQuery.of(context).viewPadding.bottom + 47.r),
                   ],
                 ),
               ),
@@ -222,5 +162,30 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  Widget buildField(
+      TextEditingController controller,
+      FocusNode focusNode,
+      String label,
+      TextStyle style, {
+        String? Function(String?)? validator,
+      }) {
+    return CustomWidgets.customTextField(
+      controller: controller,
+      focusNode: focusNode,
+      textInputAction: TextInputAction.next,
+      textInputType: TextInputType.text,
+      fillColor: bgColor,
+      filled: true,
+      label: label,
+      style: style,
+      labelStyle: style,
+      validator: validator,
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: textColor),
+        borderRadius: BorderRadius.circular(15),
+      ),
+    ).padH(10).padBottom(20.r);
   }
 }

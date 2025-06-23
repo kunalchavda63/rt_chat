@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:rt_chat/features/onboarding/provider/provider.dart';
 import '../../core/services/navigation/router.dart';
 import '../../core/utilities/utils.dart';
-import 'auth_sevice/suth_service.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -24,12 +24,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       .line(0.9);
 
   late Size size;
+  late ThemeData theme;
+
+
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     setStatusBarDarkStyle();
     size = MediaQuery.of(context).size;
+    theme = Theme.of(context);
   }
 
   @override
@@ -50,12 +54,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         debugPrint(e.message);
       }
     }
-
+    final isDarkMode = theme.brightness == Brightness.dark;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: PreferredSize(
-        preferredSize: Size.zero,
-        child: AppBar(backgroundColor: AppColors.hex2824),
+      appBar: CustomWidgets.customAppBar(
+        height: 0,
+        bgColor: theme.scaffoldBackgroundColor,
+        bottomOpacity: 0,
+        elevation: 0,
+
       ),
       backgroundColor: AppColors.transparent,
       resizeToAvoidBottomInset: true,
@@ -73,11 +80,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     CustomWidgets.customContainer(
                       h: size.height,
                       w: size.width,
-                      color: AppColors.hexEeeb,
+                      color: isDarkMode ? theme.primaryColor: AppColors.white.withAlpha(200),
+
                       child: Stack(
                         children: [
                           Opacity(
-                            opacity: 0.2,
+                            opacity: 0.5,
                             child: CustomImageView(
                               path: AssetImages.imgBg,
                               sourceType: ImageType.asset,
@@ -112,7 +120,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       curve: Curves.decelerate,
                       child: CustomWidgets.customContainer(
                         w: size.width,
-                        color: AppColors.hex2824,
+                        color: theme.scaffoldBackgroundColor,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20),
@@ -129,7 +137,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 data: AppStrings.login,
                                 style: BaseStyle.s23w500
                                     .family(FontFamily.poppins)
-                                    .c(AppColors.white)
+                                    .c(theme.primaryColor)
                                     .s(38),
                               ).padTop(10).padBottom(20.r).padLeft(21.r),
                               CustomWidgets.customTextField(
@@ -138,14 +146,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 textInputAction: TextInputAction.next,
                                 textInputType: TextInputType.emailAddress,
                                 focusNode: _emailFocus,
-                                fillColor: AppColors.hexEeeb,
+                                fillColor: theme.scaffoldBackgroundColor,
                                 filled: true,
                                 label: AppStrings.email,
-                                style: style,
-                                labelStyle: style,
+                                style: style.c(theme.primaryColor),
+                                labelStyle: style.c(theme.primaryColor),
                                 border: OutlinedInputBorder(
                                   borderSide: BorderSide(
-                                    color: AppColors.hexEeeb,
+                                    color: theme.primaryColor,
                                   ),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
@@ -155,14 +163,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 controller: _passController,
                                 textInputType: TextInputType.visiblePassword,
                                 focusNode: _passFocus,
-                                fillColor: AppColors.hexEeeb,
+                                fillColor: theme.scaffoldBackgroundColor,
                                 filled: true,
                                 label: AppStrings.password,
-                                labelStyle: style,
-                                style: style,
+                                style: style.c(theme.primaryColor),
+                                labelStyle: style.c(theme.primaryColor),
                                 border: OutlinedInputBorder(
                                   borderSide: BorderSide(
-                                    color: AppColors.hexEeeb,
+                                    color: theme.primaryColor,
                                   ),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
@@ -174,7 +182,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   },
                                   child: CustomWidgets.customText(
                                     data: AppStrings.forgotPassword,
-                                    style: style.c(AppColors.hexEeeb),
+                                    style: style.c(theme.primaryColor),
                                   ).padBottom(20.r),
                                 ),
                               ),
@@ -200,13 +208,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 10,
                                     ),
-                                    color: AppColors.hex2824,
+                                    color: theme.scaffoldBackgroundColor,
+                                    border: Border.all(color: theme.primaryColor.withAlpha(20)),
+                                    borderRadius: BorderRadius.circular(20),
                                     child: CustomWidgets.customText(
                                       textAlign: TextAlign.center,
                                       data: AppStrings.or,
                                       style: BaseStyle.s17w400
                                           .family(FontFamily.poppins)
-                                          .c(AppColors.white),
+                                          .c(theme.primaryColor),
                                     ),
                                   ),
                                 ],
@@ -230,7 +240,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 children: [
                                   CustomWidgets.customText(
                                     data: AppStrings.doNotHaveAnAccount,
-                                    style: style.c(AppColors.hexEeeb),
+                                    style: style.c(theme.primaryColor),
                                   ).padRight(10.r),
                                   GestureDetector(
                                     onTap: () {
@@ -238,7 +248,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     },
                                     child: CustomWidgets.customText(
                                       data: AppStrings.signUp,
-                                      style: style.c(AppColors.hexF2fd),
+                                      style: style.c(theme.primaryColor.withAlpha(200)),
                                     ),
                                   ),
                                 ],
@@ -265,7 +275,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       w: 60.r,
       color: AppColors.transparent,
       boxShape: BoxShape.circle,
-      border: Border.all(color: AppColors.hexEeeb),
+      border: Border.all(color: Theme.of(context).primaryColor),
       alignment: Alignment.center,
       child: CustomAnimatedWrapper(
         animationType: AnimationType.fade,

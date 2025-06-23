@@ -71,6 +71,8 @@ class AppStrings {
   static const String name = 'Name';
   static const String peopleWillSee = "People will see this name if you interact with them and they don't have you saved as a contact";
   static const String save = 'Save';
+  static const String typeAMessage = 'Type a message';
+
 
 
 

@@ -1,9 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 import '../../../../core/services/navigation/src/routes.dart';
 import '../../../../core/utilities/utils.dart';
-import '../../../onboarding/auth_sevice/suth_service.dart';
+import '../../../onboarding/provider/provider.dart';
 
 class EditName extends ConsumerStatefulWidget {
   final String? user;

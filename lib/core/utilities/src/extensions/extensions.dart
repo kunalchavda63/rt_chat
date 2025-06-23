@@ -14,6 +14,9 @@ bool get isMacOs => Platform.isMacOS;
 
 bool get isFuchsia => Platform.isFuchsia;
 
+
+
+
 // extension AppLinkLauncher on AppLinkModel {
 //   Future<void> launch({bool forceStoreFallback = false}) async {
 //     final Uri appUri = Uri.parse(appUrl);

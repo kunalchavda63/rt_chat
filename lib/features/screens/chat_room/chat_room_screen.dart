@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/app_ui/app_ui.dart';
+import 'package:rt_chat/core/utilities/utils.dart';
 import 'package:rt_chat/features/onboarding/auth_sevice/suth_service.dart';
 import 'package:rt_chat/features/screens/chat/chat_service.dart';
 import 'package:rt_chat/features/screens/provider/provider.dart';
@@ -13,7 +12,7 @@ class ChatRoomScreen extends ConsumerStatefulWidget {
   final String receiverEmail;
   final String receiverId;
   final String displayName;
-   ChatRoomScreen({
+   const ChatRoomScreen({
     super.key,
     required this.receiverEmail,
     required this.receiverId, required this.displayName,
@@ -24,10 +23,23 @@ class ChatRoomScreen extends ConsumerStatefulWidget {
 }
 
 class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
+  late Size size;
+  late ThemeData theme;
+
   final ChatService _chatService = ChatService();
 
   final AuthService _authService = AuthService();
   final ScrollController _scrollController = ScrollController();
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    size = MediaQuery.of(context).size;
+    theme = Theme.of(context);
+    setStatusBarLightStyle();
+  }
+
 
   void sendMessage() async {
     if (_messageController.text.isNotEmpty) {
@@ -55,70 +67,82 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      backgroundColor: theme.scaffoldBackgroundColor,
       resizeToAvoidBottomInset: true,
+      extendBodyBehindAppBar: true,
+
       appBar: CustomWidgets.customAppBar(
-        leading: CustomWidgets.customCircleBackButton().padLeft(25.r),
+        bgColor: theme.scaffoldBackgroundColor,
+        bottomOpacity: 0,
+
+        scrollUnderElevation: 0,
+        leading: CustomWidgets.customCircleBackButton(
+          color: theme.primaryColor
+        ).padLeft(25.r),
         title: Row(
           children: [
             CustomWidgets.customCircleIcon(
-              iconSize: 25.r,
+              iconSize: 20.r,
+              bgColor: theme.focusColor,
+              border: Border.all(color: theme.primaryColor),
               iconData: Icons.person_outline,
-              iconColor: AppColors.hex2824,
+              iconColor: theme.primaryColor,
             ).padRight(20.r),
             CustomWidgets.customText(
-                data:widget.displayName,style: BaseStyle.s17w400.c(AppColors.hex2824)),
+                data:widget.displayName,style: BaseStyle.s17w400.c(theme.primaryColor)),
             Spacer(),
             CustomWidgets.customPopUpMenuBtm(
               borderRadius: BorderRadius.circular(200),
-              boxColor: AppColors.hex2824.withAlpha(100),
+              boxColor: theme.scaffoldBackgroundColor.withAlpha(100),
               items: [
-                'Mute Notification',
-                'Group Info'
+                AppStrings.newGroup,
+                AppStrings.newGroup
               ],
               onSelected: (v){},
-              icon: Icon(Icons.drag_indicator_rounded,color: AppColors.hex2824)
+              icon: Icon(Icons.drag_indicator_rounded,color: theme.primaryColor)
             )
           ],
         )
       ),
       body: _buildMessageList(),
       bottomNavigationBar: CustomWidgets.customContainer(
-        h: 60.r,
-        color: AppColors.transparent,
-        child: Row(
-          children: [
-            Expanded(
-              child: CustomWidgets.customTextField(
-                controller:_messageController,
-                hintText: 'Type a Message',
-
-                style: BaseStyle.s17w400.line(1),
-                hintStyle: BaseStyle.s17w400.line(1),
-                padding: EdgeInsets.symmetric(horizontal: 10.r),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r),borderSide: BorderSide(color: AppColors.hex2824,width:1)),
-
-              ).padH(10.r),
-            ),
-            CustomWidgets.customCircleIcon(
-              onTap: (){
-                final user = UserModel(
-                  uid: widget.receiverId,
-                  email: widget.receiverEmail,
-                  displayName: widget.displayName, password: '',
-                );
-
-                sendMessage();
-                ref.read(recentUsersProvider.notifier).addOrMoveToTop(user);
-              },
-              h: 35.r,
-              w: 35.r,
-              bgColor: AppColors.hex2824,
-              iconColor: AppColors.hexEeeb,
-              iconData: Icons.send
-            ).padRight(20.r)
-          ],
-        )
-      ).padBottom(MediaQuery.of(context).viewPadding.bottom+MediaQuery.of(context).viewInsets.bottom+30.r),
+        color: theme.primaryColor.withAlpha(10),
+        child: CustomWidgets.customContainer(
+          child: Row(
+            children: [
+              Expanded(
+                child: CustomWidgets.customTextField(
+                  controller:_messageController,
+                  hintText: AppStrings.typeAMessage,
+                  style: BaseStyle.s17w400.line(1),
+                  hintStyle: BaseStyle.s17w400.line(1),
+                  padding: EdgeInsets.symmetric(horizontal: 10.r),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r),borderSide: BorderSide(color: AppColors.hex2824,width:1)),
+        
+                ).padH(10.r),
+              ),
+              CustomWidgets.customCircleIcon(
+                onTap: (){
+                  final user = UserModel(
+                    uid: widget.receiverId,
+                    email: widget.receiverEmail,
+                    displayName: widget.displayName, password: '',
+                  );
+        
+                  sendMessage();
+                  ref.read(recentUsersProvider.notifier).addOrMoveToTop(user);
+                },
+                h: 35.r,
+                w: 35.r,
+                bgColor: AppColors.hex2824,
+                iconColor: AppColors.hexEeeb,
+                iconData: Icons.send
+              ).padRight(20.r)
+            ],
+          )
+        ).padBottom(MediaQuery.of(context).viewPadding.bottom+MediaQuery.of(context).viewInsets.bottom+30.r),
+      ),
     );
   }
 
@@ -126,7 +150,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
     final sendId = _authService.currentUser?.uid;
 
     return StreamBuilder(
-        stream: _chatService.getMessages(widget.receiverId, sendId),
+        stream: _chatService.getMessages(widget.receiverId, sendId!),
         builder:(context,snapshot){
           if(snapshot.hasError){
             return const Text('Error');
@@ -135,9 +159,10 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
             return CircularProgressIndicator();
           }
           return ListView(
-
+            reverse: true,
+            controller: _scrollController,
             children:
-              snapshot.data!.docs.map((doc) => _buildMessageItem(doc)).toList(),
+              snapshot.data!.docs.reversed.map((doc) => _buildMessageItem(doc)).toList(),
           );
         });
   }
@@ -147,10 +172,10 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
 
 
     final currentUserId = _authService.currentUser?.uid;
-    final isMe = data['senderEmail'] == currentUserId;
+    final isMe = data['senderID'] == currentUserId;
 
     return Align(
-      alignment: isMe ? Alignment.centerLeft : Alignment.centerRight,
+      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10.r, vertical: 5.r),
         padding: EdgeInsets.all(12.r),

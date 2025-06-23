@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/models/src/user_model/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../onboarding/auth_sevice/suth_service.dart';
 
 final searchUserProvider =
     StateNotifierProvider<SearchUserNotifier, AsyncValue<List<UserModel>>>(
@@ -113,26 +115,61 @@ class SearchUserNotifier extends StateNotifier<AsyncValue<List<UserModel>>> {
 final recentUsersProvider = StateNotifierProvider<RecentUsersNotifier, List<UserModel>>(
       (ref) => RecentUsersNotifier(),
 );
-
 class RecentUsersNotifier extends StateNotifier<List<UserModel>> {
-  RecentUsersNotifier() : super([]);
+  RecentUsersNotifier() : super([]) {
+    _loadFromPrefs();
+  }
 
-  // Called when message is sent
+  final String _key = 'recent_chats';
+
+  /// Add or move user to top of list
   void addOrMoveToTop(UserModel user) {
-    // Remove if already exists
     state = [
       user,
       ...state.where((u) => u.uid != user.uid),
     ];
+    _savePrefs();
   }
 
-  // Optional: remove
+  /// Remove a user by uid
   void removeUser(String uid) {
     state = state.where((u) => u.uid != uid).toList();
+    _removeFromPrefs(uid);
   }
 
-  // Optional: clear all
+  /// Clear all recent chats
   void clear() {
     state = [];
+    _savePrefs(); // Clear from SharedPreferences too
+  }
+
+  /// Save list to SharedPreferences
+  Future<void> _savePrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonList = state.map((user) => jsonEncode(user.toJson())).toList();
+    await prefs.setStringList(_key, jsonList);
+  }
+
+  /// Load recent users from SharedPreferences
+  Future<void> _loadFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonList = prefs.getStringList(_key) ?? [];
+    state = jsonList
+        .map((userStr) => UserModel.fromJson(jsonDecode(userStr)))
+        .toList();
+  }
+
+  /// Remove one user from SharedPreferences only (called internally)
+  Future<void> _removeFromPrefs(String uid) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonList = prefs.getStringList(_key) ?? [];
+    final updatedUsers = jsonList
+        .map((user) => UserModel.fromJson(jsonDecode(user)))
+        .where((user) => user.uid != uid)
+        .toList();
+
+    final newJsonList =
+    updatedUsers.map((user) => jsonEncode(user.toJson())).toList();
+    await prefs.setStringList(_key, newJsonList);
   }
 }

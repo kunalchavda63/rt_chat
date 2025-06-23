@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
 import 'package:rt_chat/core/utilities/src/helper_method.dart';
 import 'package:rt_chat/core/utilities/src/strings.dart';
-import 'package:rt_chat/features/onboarding/auth_sevice/suth_service.dart';
+import '../../onboarding/provider/provider.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   final User? user;

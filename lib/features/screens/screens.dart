@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rt_chat/core/app_ui/src/widgets/custom_widgets.dart';
 
 class Screens extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
@@ -8,8 +9,16 @@ class Screens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+
+      backgroundColor: Theme.of(context).primaryColor,
+      appBar: CustomWidgets.customAppBar(
+        height: 0,
+        bgColor: Theme.of(context).scaffoldBackgroundColor
+      ),
       body: navigationShell,
       bottomNavigationBar: NavigationBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         destinations:
             destinations
                 .map(
@@ -23,7 +32,9 @@ class Screens extends StatelessWidget {
 
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: (index)=>navigationShell.goBranch(index),
-        indicatorColor: Theme.of(context).primaryColor,
+        indicatorColor: Theme.of(context).focusColor,
+        indicatorShape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+
       ),
     );
   }
