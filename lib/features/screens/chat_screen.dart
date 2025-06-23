@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
 import 'package:rt_chat/core/utilities/utils.dart';

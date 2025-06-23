@@ -1,8 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rt_chat/core/app_ui/app_ui.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
 import 'package:rt_chat/core/utilities/utils.dart';
-import 'package:rt_chat/features/screens/chat_room/chat_room_screen.dart';
 import 'package:rt_chat/features/screens/provider/provider.dart';
 
 class SearchUsers extends ConsumerStatefulWidget {

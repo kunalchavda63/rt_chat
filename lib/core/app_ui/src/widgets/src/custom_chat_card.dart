@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 import '../../../../../features/screens/chat/provider/provider.dart';
 import '../../../app_ui.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class CustomChatCard extends ConsumerWidget {
   final UserModel? userModel;
@@ -12,7 +11,6 @@ class CustomChatCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final currentUserId = FirebaseAuth.instance.currentUser?.uid;
     final receiverId = userModel?.uid ?? '';
 
     // Watch the chat card provider
@@ -76,7 +74,7 @@ class CustomChatCard extends ConsumerWidget {
                   ).padBottom(5.r),
 
                   // Show unread count badge if there are unread messages
-                  if (chat!.unreadCount > 0)
+                  if (chat.unreadCount > 0)
                     CustomWidgets.customContainer(
                       h: 20.r,
                       w: 20.r,
