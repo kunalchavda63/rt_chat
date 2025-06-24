@@ -59,6 +59,8 @@ class CustomWidgets {
     double? w,
     Widget? child,
     EdgeInsets? padding,
+    EdgeInsets? margin,
+    BoxConstraints? constraints,
     BorderRadius? borderRadius,
     Border? border,
     BoxShape? boxShape,
@@ -69,10 +71,13 @@ class CustomWidgets {
     BlendMode? blendMode,
     Clip? clip,
     String? path,
+
   }) {
     return CustomContainer(
       h: h,
       w: w,
+      margin: margin,
+      constraints: constraints,
       color: color,
       padding: padding,
       border: border,

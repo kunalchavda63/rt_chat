@@ -5,6 +5,8 @@ class CustomContainer extends StatelessWidget {
   final double? w;
   final Widget? child;
   final EdgeInsets? padding;
+  final EdgeInsets? margin;
+  final BoxConstraints? constraints;
   final BorderRadius? borderRadius;
   final Border? border;
   final VoidCallback? onTap;
@@ -15,6 +17,7 @@ class CustomContainer extends StatelessWidget {
   final BlendMode? blendMode;
   final Clip? clipBehaviour;
   final String? path;
+
 
   const CustomContainer({
     super.key,
@@ -32,6 +35,8 @@ class CustomContainer extends StatelessWidget {
     this.blendMode,
     this.clipBehaviour,
     this.path,
+    this.constraints,
+    this.margin
   });
 
   @override
@@ -43,6 +48,8 @@ class CustomContainer extends StatelessWidget {
         width: w,
         alignment: alignment,
         padding: padding,
+        margin: margin,
+        constraints: constraints,
         decoration: BoxDecoration(
           backgroundBlendMode: blendMode,
           image:

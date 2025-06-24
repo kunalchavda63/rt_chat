@@ -3,7 +3,6 @@
 
 
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 import 'package:rt_chat/features/screens/chat_room/chat_room_screen.dart';
 

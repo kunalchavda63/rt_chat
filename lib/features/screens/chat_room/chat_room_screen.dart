@@ -26,9 +26,7 @@ class ChatRoomScreen extends ConsumerStatefulWidget {
 class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
   late Size size;
   late ThemeData theme;
-
   final ChatService _chatService = ChatService();
-
   final AuthService _authService = AuthService();
   final ScrollController _scrollController = ScrollController();
 
@@ -50,6 +48,8 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
             email: widget.receiverEmail,
             password: '',
             uid: widget.receiverId,
+          displayName: widget.displayName
+
 
         ),
         message: _messageController.text.trim(),
@@ -161,7 +161,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
         stream: _chatService.getMessages(widget.receiverId, sendId!),
         builder:(context,snapshot){
           if(snapshot.hasError){
-            return const Text('Error');
+            return CustomWidgets.customText(data: 'Error: ${snapshot.hasError} ');
           }
           if(snapshot.connectionState == ConnectionState.waiting){
             return CircularProgressIndicator();
@@ -185,40 +185,39 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
     final String formattedTime = formatTimestamp(timestamp);
 
     return Align(
-      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        constraints: BoxConstraints(
-          maxWidth: size.width/2,
-          minWidth: 20
+        alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+        child: CustomWidgets.customContainer(
 
-        ),
-        margin: EdgeInsets.symmetric(horizontal: 10.r, vertical: 5.r),
-        padding: EdgeInsets.all(12.r),
-        decoration: BoxDecoration(
-          border: Border.all(color: isMe ? theme.primaryColor : theme.scaffoldBackgroundColor),
-          color: isMe ? theme.scaffoldBackgroundColor : theme.primaryColor,
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: isMe?CrossAxisAlignment.end:CrossAxisAlignment.start,
-          children: [
-            Text(
-              data['message'] ?? '',
-              style: BaseStyle.s17w400.c(
-                isMe ? theme.primaryColor : theme.scaffoldBackgroundColor,
+          constraints: BoxConstraints(
+            maxWidth: size.width/2,
+            minWidth: 50
+          ),
+          margin: EdgeInsets.symmetric(horizontal: 10.r, vertical: 5.r),
+          padding: EdgeInsets.all(12.r),
+
+            border: Border.all(color: isMe ? theme.primaryColor : theme.scaffoldBackgroundColor),
+            color: isMe ? theme.scaffoldBackgroundColor : theme.primaryColor,
+            borderRadius: BorderRadius.circular(12.r),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: isMe?CrossAxisAlignment.end:CrossAxisAlignment.start,
+            children: [
+              CustomWidgets.customText(
+                data:data['message'] ?? '',
+                style: BaseStyle.s17w400.c(
+                  isMe ? theme.primaryColor : theme.scaffoldBackgroundColor,
+                ),
               ),
-            ),
-            SizedBox(height: 4.r),
-            Text(
-              formattedTime,
-              style: BaseStyle.s11w700.c(
-                isMe ? theme.primaryColor.withOpacity(0.6) : theme.scaffoldBackgroundColor.withOpacity(0.6),
+              SizedBox(height: 4.r),
+              CustomWidgets.customText(
+                data: formattedTime,
+                style: BaseStyle.s11w700.c(
+                  isMe ? theme.primaryColor.withAlpha(100) : theme.scaffoldBackgroundColor.withAlpha(100),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
     );
   }
 }
