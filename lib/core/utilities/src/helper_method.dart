@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -119,3 +120,18 @@ void setStatusBarLightStyle() {
     ),
   );
 }
+String formatTimestamp(Timestamp? timestamp) {
+  if (timestamp == null) return '';
+
+  final dateTime = timestamp.toDate();
+  final now = DateTime.now();
+
+  final isToday = dateTime.year == now.year &&
+      dateTime.month == now.month &&
+      dateTime.day == now.day;
+
+  return isToday
+      ? "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}"
+      : "${dateTime.day.toString().padLeft(2, '0')}/${dateTime.month.toString().padLeft(2, '0')}/${dateTime.year}";
+}
+

@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/models/src/message_model/message_model.dart';
+
+import '../../../core/models/src/user_model/user_model.dart';
+import '../provider/provider.dart';
 
 
 class ChatService {
@@ -22,7 +26,11 @@ return _firestore.collection('users').snapshots().map((snapshot){
 
 }
 
-  Future<void> sendMessage(String receiverId, String message) async {
+  Future<void> sendMessage({
+    required WidgetRef ref,
+    required UserModel receiver,
+    required String message,
+  }) async {
     final String currentUserId = firebaseAuth.currentUser!.uid;
     final String currentUserEmail = firebaseAuth.currentUser!.email!;
     final Timestamp timestamp = Timestamp.now();
@@ -30,13 +38,13 @@ return _firestore.collection('users').snapshots().map((snapshot){
     Message newMessage = Message(
       senderID: currentUserId,
       senderEmail: currentUserEmail,
-      receiverID: receiverId,
+      receiverID: receiver.uid!,
       message: message,
       timeStamp: timestamp,
-      isRead: false, // new messages are unread by default
+      isRead: false,
     );
 
-    List<String> ids = [currentUserId, receiverId];
+    List<String> ids = [currentUserId, receiver.uid!];
     ids.sort();
     String chatRoomId = ids.join('_');
 
@@ -45,7 +53,11 @@ return _firestore.collection('users').snapshots().map((snapshot){
         .doc(chatRoomId)
         .collection("messages")
         .add(newMessage.toMap());
+
+    /// ✅ Update recent chat list manually
+    ref.read(recentUsersProvider.notifier).addOrMoveToTop(receiver);
   }
+
 
   // get messages
   Stream<QuerySnapshot> getMessages(String userId, String otherUserId) {

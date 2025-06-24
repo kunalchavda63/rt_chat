@@ -3,6 +3,7 @@
 
 
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 import 'package:rt_chat/features/screens/chat_room/chat_room_screen.dart';
 
@@ -99,7 +100,7 @@ final goRouterConfig = GoRouter(
     GoRoute(
       path: RoutesEnum.editName.path,
       builder: (context, state) {
-        final user = state.extra as String;
+        UserModel user = state.extra as UserModel;
         return  EditName(user:user);
       },
     ),

@@ -286,13 +286,13 @@ class CustomWidgets {
   static Widget customButton({
     String? label,
     VoidCallback? onTap,
-    bool? isFullyWhite,
+    bool? isFullyWhite = false,
   }) {
     return CustomButton(label: label, onTap: onTap, isFullyWhite: isFullyWhite);
   }
 
-  static Widget customChatCard({UserModel? user}) {
-    return CustomChatCard(userModel: user);
+  static Widget customChatCard({UserModel? user,VoidCallback? onTap}) {
+    return CustomChatCard(userModel: user,onTap: onTap,);
   }
 
   static Widget customPopUpMenuBtm({

@@ -52,6 +52,7 @@ final chatCardProvider = StreamProvider.family<CustomChatStateModel, String>((re
         lastMessage: lastMessageData['message']?.toString() ?? '',
         messageCount: snapshot.docs.length,
         unreadCount: unreadCount,
+        timestamp: (lastMessageData['timestamp'] as Timestamp?)?.toDate()
       );
     }
   } catch (e) {
@@ -63,3 +64,28 @@ final chatCardProvider = StreamProvider.family<CustomChatStateModel, String>((re
     );
   }
 });
+
+ Future<void> markMessagesAsRead(String otherUserId) async {
+final currentUser = FirebaseAuth.instance.currentUser;
+if (currentUser == null) return;
+
+final currentUserId = currentUser.uid;
+final ids = [currentUserId, otherUserId]..sort();
+final chatRoomDoc = ids.join('_');
+
+final messagesQuery = await FirebaseFirestore.instance
+    .collection('chat_room')
+    .doc(chatRoomDoc)
+    .collection('messages')
+    .where('receiverID', isEqualTo: currentUserId)
+    .where('isRead', isEqualTo: false)
+    .get();
+
+final batch = FirebaseFirestore.instance.batch();
+
+for (final doc in messagesQuery.docs) {
+batch.update(doc.reference, {'isRead': true});
+}
+
+await batch.commit();
+}

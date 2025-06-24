@@ -10,7 +10,7 @@ class CustomButton extends StatelessWidget {
     super.key,
     this.label,
     this.onTap,
-    this.isFullyWhite = false,
+    this.isFullyWhite = true,
   });
 
   @override
@@ -22,7 +22,7 @@ class CustomButton extends StatelessWidget {
       w: size.width,
       color: AppColors.hexEeeb,
       border: Border.all(
-        color: isFullyWhite == true ? AppColors.hex2824 : AppColors.transparent,
+        color: Theme.of(context).primaryColor,
       ),
       alignment: Alignment.center,
       borderRadius: BorderRadius.circular(15),
@@ -33,7 +33,7 @@ class CustomButton extends StatelessWidget {
         children: [
           if (isFullyWhite == false)
             Opacity(
-              opacity: 0.08,
+              opacity: 0.2,
               child: CustomWidgets.customImageView(
                 path: AssetImages.imgBg,
                 fit: BoxFit.cover, // Make image cover fully

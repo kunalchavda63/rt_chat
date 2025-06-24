@@ -15,7 +15,8 @@ class ChatRoomScreen extends ConsumerStatefulWidget {
    const ChatRoomScreen({
     super.key,
     required this.receiverEmail,
-    required this.receiverId, required this.displayName,
+    required this.receiverId,
+     required this.displayName,
   });
 
   @override
@@ -44,10 +45,17 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
   void sendMessage() async {
     if (_messageController.text.isNotEmpty) {
       await _chatService.sendMessage(
-        widget.receiverId,
-        _messageController.text.trim(),
+        ref: ref,
+        receiver:UserModel(
+            email: widget.receiverEmail,
+            password: '',
+            uid: widget.receiverId,
+
+        ),
+        message: _messageController.text.trim(),
       );
       _messageController.clear();
+
 
       // Scroll to bottom
       Future.delayed(Duration(milliseconds: 100), () {
@@ -170,24 +178,48 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
   Widget _buildMessageItem(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-
     final currentUserId = _authService.currentUser?.uid;
     final isMe = data['senderID'] == currentUserId;
+
+    final Timestamp? timestamp = data['timestamp'] as Timestamp?;
+    final String formattedTime = formatTimestamp(timestamp);
 
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
+        constraints: BoxConstraints(
+          maxWidth: size.width/2,
+          minWidth: 20
+
+        ),
         margin: EdgeInsets.symmetric(horizontal: 10.r, vertical: 5.r),
         padding: EdgeInsets.all(12.r),
         decoration: BoxDecoration(
-          color: isMe ? AppColors.hex2824 : AppColors.hex2824.withAlpha(50),
+          border: Border.all(color: isMe ? theme.primaryColor : theme.scaffoldBackgroundColor),
+          color: isMe ? theme.scaffoldBackgroundColor : theme.primaryColor,
           borderRadius: BorderRadius.circular(12.r),
         ),
-        child: Text(
-          data['message'] ?? '',
-          style: BaseStyle.s17w400.c(isMe?AppColors.hexEeeb:AppColors.hex2824),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: isMe?CrossAxisAlignment.end:CrossAxisAlignment.start,
+          children: [
+            Text(
+              data['message'] ?? '',
+              style: BaseStyle.s17w400.c(
+                isMe ? theme.primaryColor : theme.scaffoldBackgroundColor,
+              ),
+            ),
+            SizedBox(height: 4.r),
+            Text(
+              formattedTime,
+              style: BaseStyle.s11w700.c(
+                isMe ? theme.primaryColor.withOpacity(0.6) : theme.scaffoldBackgroundColor.withOpacity(0.6),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+

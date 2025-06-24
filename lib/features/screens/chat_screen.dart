@@ -1,9 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rt_chat/core/services/navigation/router.dart';
-import 'package:rt_chat/core/utilities/utils.dart';
-import 'package:rt_chat/features/onboarding/provider/provider.dart';
+import 'package:rt_chat/features/screens/chat/provider/provider.dart';
 import 'package:rt_chat/features/screens/provider/provider.dart';
+
+import '../../core/services/navigation/router.dart';
+import '../../core/utilities/utils.dart';
+import '../onboarding/provider/provider.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen({super.key});
@@ -24,21 +25,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     setStatusBarDarkStyle();
   }
 
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-
   @override
   Widget build(BuildContext context) {
-    final recentChats = ref.watch(recentUsersProvider);
+    final recentChatsAsync = ref.watch(recentUsersProvider);
     final provider = ref.watch(authServiceProvider);
     final user = provider.currentUser;
-
-    final List<String> menuItems = [
-      AppStrings.newGroup,
-      AppStrings.newBroadCast,
-      AppStrings.linkedDevice,
-      AppStrings.starred,
-      AppStrings.settings,
-    ];
 
     final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
 
@@ -53,9 +44,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           alignment: Alignment.center,
           boxShape: BoxShape.circle,
           child: CustomWidgets.customText(
-            data: user?.email != null
-                ? user!.email!.trim().substring(0, 1).toUpperCase()
-                : 'C',
+            data: user?.email?.substring(0, 1).toUpperCase() ?? 'C',
             style: BaseStyle.s17w400.c(theme.primaryColor),
           ),
         ).padLeft(20),
@@ -67,7 +56,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ),
             const Spacer(),
             CustomWidgets.customPopUpMenuBtm(
-              items: menuItems,
+              items: const [
+                AppStrings.newGroup,
+                AppStrings.newBroadCast,
+                AppStrings.linkedDevice,
+                AppStrings.starred,
+                AppStrings.settings,
+              ],
               icon: Icon(Icons.more_vert, color: textColor),
               onSelected: (value) {
                 context.push(RoutesEnum.settings.path);
@@ -76,18 +71,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           ],
         ),
       ),
-      body: ListView.builder(
-        itemCount: recentChats.length,
-        itemBuilder: (_, index) {
-          final chat = recentChats[index];
-          return InkWell(
-              onTap: (){
-                context.push(RoutesEnum.chatRoomScreen.path,extra: chat);
-              },
-              child: CustomWidgets.customChatCard(user: chat).padH(10.r).padV(10.r));
-
-        },
-      ),
+      body:ListView.builder(
+            itemCount: recentChatsAsync.length,
+            itemBuilder: (_, index) {
+              final chatUser = recentChatsAsync[index];
+              return CustomWidgets.customChatCard(
+                user: chatUser,
+                onTap: () {
+                  markMessagesAsRead(chatUser.uid!);
+                  context.push(RoutesEnum.chatRoomScreen.path, extra: chatUser);
+                },
+              ).padH(10.r).padV(10.r);
+            },
+          ),
       floatingActionButton: CustomWidgets.customFloatingActionButton(
         child: Icon(Icons.search, color: theme.colorScheme.onPrimary),
         onTap: () {
@@ -98,6 +94,3 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 }
-
-
-//context.push(RoutesEnum.chatRoomScreen.path, extra: chat);

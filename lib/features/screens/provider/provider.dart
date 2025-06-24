@@ -5,8 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-
 final searchUserProvider =
     StateNotifierProvider<SearchUserNotifier, AsyncValue<List<UserModel>>>(
       (ref) => SearchUserNotifier(),

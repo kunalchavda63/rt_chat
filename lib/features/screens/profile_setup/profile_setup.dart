@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
 import 'package:rt_chat/core/utilities/utils.dart';
 
@@ -27,6 +28,13 @@ class _ImageProfileUpdateState extends ConsumerState<ImageProfileUpdate> {
     final displayName = current?.displayName;
     final phone = current?.phoneNumber;
     final email = current?.email;
+    final UserModel user = UserModel(
+        email: current!.email!,
+        password: '',
+        displayName: current.displayName,
+      phone: current.phoneNumber,
+
+    );
 
 
 
@@ -62,7 +70,7 @@ class _ImageProfileUpdateState extends ConsumerState<ImageProfileUpdate> {
                 icon: Icons.person_2_outlined,
                 context: context,
                 onTap: (){
-                  context.push(RoutesEnum.editName.path,extra: current?.displayName);
+                  context.push(RoutesEnum.editName.path,extra: user);
                 }
               ),
               widgetCard(
@@ -71,7 +79,8 @@ class _ImageProfileUpdateState extends ConsumerState<ImageProfileUpdate> {
                 icon: Icons.info_outline,
                 context: context,
                   onTap: (){
-                    push(context,RoutesEnum.editName.path);
+                  context.push(RoutesEnum.editName.path,extra: user);
+
                   }
               ),
               widgetCard(
