@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
 import 'package:rt_chat/core/utilities/utils.dart';
@@ -98,7 +97,8 @@ class _SearchUsersState extends ConsumerState<SearchUsers> {
           ).padLeft(10),
 
           searchState.when(
-            data: (userList) =>(userList.isEmpty) ? Center(
+            data: (userList) {
+              return (userList.isEmpty) ? Center(
               child: CustomWidgets.customText(
                 data: 'User Not Found',
                 style: BaseStyle.s28w400
@@ -122,18 +122,19 @@ class _SearchUsersState extends ConsumerState<SearchUsers> {
                     duration: Duration(milliseconds: 800),
                     curve: Curves.decelerate,
                     animationType: AnimationType.fade,
-                    child: InkWell(
-                      onTap: () {
-                        context.push(RoutesEnum.chatRoomScreen.path, extra: user);
-                      },
-                      child: CustomWidgets.customChatCard(user: user)
-                          .padH(20.r)
-                          .padV(10.r),
-                    ),
+                    child: CustomWidgets.customChatCard(
+                        onTap: (){
+                          ref.read(recentUsersProvider.notifier).addOrMoveToTop(user);
+                          context.push(RoutesEnum.chatRoomScreen.path, extra: user);
+                        },
+                        user: user)
+                        .padH(20.r)
+                        .padV(10.r),
                   );
                 },
               ),
-            ),
+            );
+            },
             loading: () => Expanded(
               child: Skeletonizer(
                 enabled: false,
