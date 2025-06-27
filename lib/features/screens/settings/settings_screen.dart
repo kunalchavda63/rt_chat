@@ -1,66 +1,61 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
 import 'package:rt_chat/core/utilities/src/helper_method.dart';
 import 'package:rt_chat/core/utilities/src/strings.dart';
-import '../../onboarding/provider/provider.dart';
 
-class SettingsScreen extends ConsumerStatefulWidget {
+import '../../onboarding/auth/bloc/auth_bloc.dart';
+import '../../onboarding/auth/bloc/auth_event.dart';
+import '../../onboarding/auth/bloc/auth_state.dart';
+
+class SettingsScreen extends StatelessWidget {
   final User? user;
 
-  const SettingsScreen({
-    super.key,
-    this.user
-  });
+  const SettingsScreen({super.key, this.user});
 
-  @override
-  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    final provider = ref.watch(authServiceProvider);
-    void logOut() async{
-      try{
-        await provider.signOut(context);
-        if(!context.mounted){return;}
-        go(context,RoutesEnum.appEntryPoint.path);
-
-      } on FirebaseAuthException catch (e) {
-        debugPrint(e.message);
-      }
-    }
-
-
-
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: [
-          CustomWidgets.customContainer(
-            onTap: (){
-              logOut();
-            },
-            h: 60.r,
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is Unauthenticated) {
+          go(context, RoutesEnum.appEntryPoint.path);
+        } else if (state is AuthError) {
+          showErrorToast("Logout Failed: ${state.message}");
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(),
+        body: Column(
+          children: [
+            CustomWidgets.customContainer(
+              onTap: () {
+                context.read<AuthBloc>().add(SignOutRequested());
+              },
+              h: 60.r,
               w: MediaQuery.of(context).size.width,
               color: AppColors.hex2824.withAlpha(10),
               padding: EdgeInsets.symmetric(horizontal: 20.r),
               alignment: Alignment.center,
+              borderRadius: BorderRadius.circular(20.r),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CustomWidgets.customCircleIcon(h: 20.r,w: 20.r,iconData:Icons.logout_outlined,iconColor: Colors.red).padRight(20.r),
-                  CustomWidgets.customText(data: AppStrings.logout,style: BaseStyle.s17w400.c(AppColors.hex7777))
+                  CustomWidgets.customCircleIcon(
+                    h: 20.r,
+                    w: 20.r,
+                    iconData: Icons.logout_outlined,
+                    iconColor: Colors.red,
+                  ).padRight(20.r),
+                  CustomWidgets.customText(
+                    data: AppStrings.logout,
+                    style: BaseStyle.s17w400.c(AppColors.hex7777),
+                  ),
                 ],
-
               ),
-          borderRadius: BorderRadius.circular(20.r)
-          ).padH(20.r)
-
-        ],
+            ).padH(20.r),
+          ],
+        ),
       ),
     );
   }
 }
-

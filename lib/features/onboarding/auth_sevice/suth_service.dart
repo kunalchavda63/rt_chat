@@ -17,7 +17,6 @@ class AuthService {
   Future<UserCredential> signIn({
     required String email,
     required String password,
-    required BuildContext context,
   }) async {
     try {
       final userCredential = await firebaseAuth.signInWithEmailAndPassword(
@@ -34,7 +33,6 @@ class AuthService {
 
   Future<UserCredential?> createAccount({
     required UserModel user,
-    required BuildContext context,
   }) async {
     try {
       final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
@@ -66,40 +64,55 @@ class AuthService {
     }
   }
 
-  Future<void> signOut(BuildContext context) async {
+  Future<void> signOut() async {
     await firebaseAuth.signOut();
     showSuccessToast("Signed out");
   }
 
-  Future<void> resetPassword({
-    required String email,
-    required BuildContext context,
-  }) async {
+  Future<void> sendForgotPasswordEmail({required String email}) async {
     try {
-      // Check if the email exists in Firestore
-      final userQuery =
-          await FirebaseFirestore.instance
-              .collection('Users')
-              .where('email', isEqualTo: email)
-              .limit(1)
-              .get();
+      // Step 1: Check if user exists in Firestore
+      final userQuery = await FirebaseFirestore.instance
+          .collection('Users')
+          .where('email', isEqualTo: email)
+          .limit(1)
+          .get();
 
       if (userQuery.docs.isEmpty) {
-        showErrorToast("User does not exist with this email.");
+        // If no user found, show error and return early
+        showErrorToast("User not registered.");
+        print("User not registered: $email");
         return;
       }
 
-      // Send reset email
-      await firebaseAuth.sendPasswordResetEmail(email: email);
-      showSuccessToast("Reset email sent to $email");
-      if (!context.mounted) {
-        return;
+      // Step 2: Send password reset email using FirebaseAuth
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+
+      // Step 3: Optional success message
+      print("Password reset email sent to $email");
+      showSuccessToast("Password reset email sent!");
+
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        showErrorToast("User not registered.");
+        print("FirebaseAuth: User not found for $email");
+      } else if (e.code == 'invalid-email') {
+        showErrorToast("Invalid email address.");
+        print("FirebaseAuth: Invalid email $email");
+      } else {
+        showErrorToast("Firebase error: ${e.message}");
+        print("FirebaseAuth error: ${e.message}");
       }
-      context.pop();
+      rethrow;
     } catch (e) {
-      showErrorToast("Reset failed: ${_extractMessage(e)}");
+      showErrorToast("Something went wrong: $e");
+      print("General error: $e");
+      rethrow;
     }
   }
+
+
+
 
   Future<void> updateUserName({
     required String username,

@@ -5,7 +5,7 @@ import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 
 import 'widgets.dart';
 
-class CustomWidgets {
+ class CustomWidgets {
   // Custom Text field
   static Widget customTextField({
     String? label,

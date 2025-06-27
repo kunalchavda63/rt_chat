@@ -1,44 +1,49 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
-import 'package:rt_chat/features/onboarding/provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import 'auth/bloc/auth_bloc.dart';
+import 'auth/bloc/auth_event.dart';
+import 'auth/bloc/auth_state.dart';
 
-class AppEntryPoint extends ConsumerWidget {
+class AppEntryPoint extends StatefulWidget {
   const AppEntryPoint({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateProvider);
+  State<AppEntryPoint> createState() => _AppEntryPointState();
+}
 
-    return authState.when(
-      data: (user) {
-        debugPrint('User Email : ${user?.email}');
-        debugPrint('User DisplayName: ${user?.displayName}');
-        debugPrint('User PhotoUrl: ${user?.photoURL}');
-        debugPrint('User PhoneNumber: ${user?.phoneNumber}');
-        debugPrint('User UID: ${user?.uid}');
-        // Redirect based on user auth state
-        Future.microtask(() {
-          if (user == null) {
-            if (!context.mounted) {
-              return;
-            }
-            context.go(RoutesEnum.login.path);
-          } else {
-            if (!context.mounted) {
-              return;
-            }
-            context.go(RoutesEnum.chatScreen.path,extra: user);
-          }
-        });
+class _AppEntryPointState extends State<AppEntryPoint> {
+  @override
+  void initState() {
+    super.initState();
+    // Trigger auth check when app starts
+    context.read<AuthBloc>().add(CheckAuthStatus());
+  }
 
-        // While redirecting, show a splash/loading screen
-        return const Scaffold(body: Center(child: CircularProgressIndicator()));
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AuthBloc, AuthState>(
+      listenWhen: (previous, current) => current is Authenticated || current is Unauthenticated,
+      listener: (context, state) {
+        if (state is Authenticated) {
+          final User user = state.user;
+          context.go(RoutesEnum.chatScreen.path, extra: user);
+        } else if (state is Unauthenticated) {
+          context.go(RoutesEnum.login.path);
+        }
       },
-      loading:
-          () =>
-              const Scaffold(body: Center(child: CircularProgressIndicator())),
-      error: (e, _) => Scaffold(body: Center(child: Text('Error: $e'))),
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AuthLoading || state is AuthInitial) {
+            return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          } else if (state is AuthError) {
+            return Scaffold(body: Center(child: Text('Error: ${state.message}')));
+          }
+          // While listener is handling navigation, keep splash
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        },
+      ),
     );
   }
 }
