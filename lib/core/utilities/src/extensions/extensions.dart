@@ -1,43 +1,33 @@
-import 'dart:io';
+import 'package:flutter/foundation.dart' show defaultTargetPlatform, TargetPlatform, kIsWeb;
 
-enum PlatformType { android, ios, windows, linux, macos, fuchsia }
+/// Enum for supported platforms
+enum PlatformType { android, ios, windows, linux, macos, fuchsia, web, unknown }
 
-bool get isAndroid => Platform.isAndroid;
+PlatformType getCurrentPlatform() {
+  if (kIsWeb) return PlatformType.web;
 
-bool get isIos => Platform.isIOS;
+  switch (defaultTargetPlatform) {
+    case TargetPlatform.android:
+      return PlatformType.android;
+    case TargetPlatform.iOS:
+      return PlatformType.ios;
+    case TargetPlatform.macOS:
+      return PlatformType.macos;
+    case TargetPlatform.windows:
+      return PlatformType.windows;
+    case TargetPlatform.linux:
+      return PlatformType.linux;
+    case TargetPlatform.fuchsia:
+      return PlatformType.fuchsia;
+    default:
+      return PlatformType.unknown;
+  }
+}
 
-bool get isWindows => Platform.isWindows;
-
-bool get isLinux => Platform.isLinux;
-
-bool get isMacOs => Platform.isMacOS;
-
-bool get isFuchsia => Platform.isFuchsia;
-
-
-
-
-// extension AppLinkLauncher on AppLinkModel {
-//   Future<void> launch({bool forceStoreFallback = false}) async {
-//     final Uri appUri = Uri.parse(appUrl);
-//     final Uri storeUri = Uri.parse(storeUrl);
-//     try {
-//       if (!forceStoreFallback && await canLaunchUrl(appUri)) {
-//         final success = await launchUrl(
-//           appUri,
-//           mode: LaunchMode.externalApplication,
-//         );
-//         if (success) return;
-//       }
-//     } catch (e) {
-//       debugPrint("App launch failed: $e");
-//     }
-//
-//     // fallback to store
-//     if (await canLaunchUrl(storeUri)) {
-//       await launchUrl(storeUri, mode: LaunchMode.externalApplication);
-//     } else {
-//       Exception('Could not launch app or store link.');
-//     }
-//   }
-// }
+bool get isAndroid => getCurrentPlatform() == PlatformType.android;
+bool get isIos => getCurrentPlatform() == PlatformType.ios;
+bool get isWeb => getCurrentPlatform() == PlatformType.web;
+bool get isDesktop =>
+    getCurrentPlatform() == PlatformType.windows ||
+        getCurrentPlatform() == PlatformType.macos ||
+        getCurrentPlatform() == PlatformType.linux;

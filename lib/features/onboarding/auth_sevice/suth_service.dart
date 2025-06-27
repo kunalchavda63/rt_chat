@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:go_router/go_router.dart';
 import 'package:rt_chat/core/models/src/user_model/user_model.dart';
 import 'package:rt_chat/core/utilities/src/extensions/logger/logger.dart';
 import '../../../core/app_ui/app_ui.dart'; // Your toast file
@@ -81,7 +80,7 @@ class AuthService {
       if (userQuery.docs.isEmpty) {
         // If no user found, show error and return early
         showErrorToast("User not registered.");
-        print("User not registered: $email");
+        debugPrint("User not registered: $email");
         return;
       }
 
@@ -89,24 +88,24 @@ class AuthService {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
 
       // Step 3: Optional success message
-      print("Password reset email sent to $email");
+      debugPrint("Password reset email sent to $email");
       showSuccessToast("Password reset email sent!");
 
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         showErrorToast("User not registered.");
-        print("FirebaseAuth: User not found for $email");
+        debugPrint("FirebaseAuth: User not found for $email");
       } else if (e.code == 'invalid-email') {
         showErrorToast("Invalid email address.");
-        print("FirebaseAuth: Invalid email $email");
+        debugPrint("FirebaseAuth: Invalid email $email");
       } else {
         showErrorToast("Firebase error: ${e.message}");
-        print("FirebaseAuth error: ${e.message}");
+        debugPrint("FirebaseAuth error: ${e.message}");
       }
       rethrow;
     } catch (e) {
       showErrorToast("Something went wrong: $e");
-      print("General error: $e");
+      debugPrint("General error: $e");
       rethrow;
     }
   }

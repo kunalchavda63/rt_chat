@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rt_chat/features/onboarding/auth_sevice/suth_service.dart';
 import 'package:rt_chat/features/screens/chat/provider/provider.dart';
 import 'package:rt_chat/features/screens/provider/provider.dart';
 
 import '../../core/services/navigation/router.dart';
 import '../../core/utilities/utils.dart';
-import '../onboarding/provider/provider.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen({super.key});
@@ -28,7 +28,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     final recentChatsAsync = ref.watch(recentUsersProvider);
-    final provider = ref.watch(authServiceProvider);
+    final AuthService provider = AuthService();
     final user = provider.currentUser;
 
     final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
