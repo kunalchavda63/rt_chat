@@ -1,5 +1,7 @@
   import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rt_chat/bloc/recent_user_bloc/recent_user_cubit.dart';
+import 'package:rt_chat/bloc/search_user_bloc/search_cubit.dart';
 import 'package:rt_chat/bloc/theme_bloc/theme_cubit.dart';
   import 'package:rt_chat/core/app_ui/app_ui.dart';
 import 'package:rt_chat/features/onboarding/auth/bloc/auth_bloc.dart';
@@ -18,6 +20,10 @@ import 'package:rt_chat/features/onboarding/auth_sevice/suth_service.dart';
             providers: [
               BlocProvider(create: (_)=>AuthBloc(service)),
               BlocProvider(create: (_)=>ThemeCubit()),
+              BlocProvider(create: (_)=>RecentUserCubit()),
+              BlocProvider(create: (_)=>SearchUserCubit()),
+
+
             ],
             child: MyApp())));
   }
