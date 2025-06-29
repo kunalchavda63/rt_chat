@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path/path.dart';
 import 'package:rt_chat/core/models/src/message_model/message_model.dart';
 
 import '../../../core/models/src/user_model/user_model.dart';
@@ -27,7 +28,7 @@ return _firestore.collection('users').snapshots().map((snapshot){
 }
 
   Future<void> sendMessage({
-    required WidgetRef ref,
+    required WidgetRef? ref,
     required UserModel receiver,
     required String message,
   }) async {
@@ -54,8 +55,8 @@ return _firestore.collection('users').snapshots().map((snapshot){
         .collection("messages")
         .add(newMessage.toMap());
 
-    /// ✅ Update recent chat list manually
-    ref.read(recentUsersProvider.notifier).addOrMoveToTop(receiver);
+
+    // ref.read(recentUsersProvider.notifier).addOrMoveToTop(receiver);
   }
 
 

@@ -1,35 +1,35 @@
+// 📦 Imports
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rt_chat/core/app_ui/app_ui.dart';
-import 'package:rt_chat/core/utilities/utils.dart';
-import 'package:rt_chat/features/onboarding/auth_sevice/suth_service.dart';
-import 'package:rt_chat/features/screens/chat/chat_service.dart';
-import 'package:rt_chat/features/screens/provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../bloc/chat_user_bloc/chat_bloc.dart';
+import '../../../core/app_ui/app_ui.dart';
 import '../../../core/models/src/user_model/user_model.dart';
+import '../../../core/utilities/utils.dart';
 
-class ChatRoomScreen extends ConsumerStatefulWidget {
+class ChatRoomScreen extends StatefulWidget {
   final String receiverEmail;
   final String receiverId;
   final String displayName;
-   const ChatRoomScreen({
+
+  const ChatRoomScreen({
     super.key,
     required this.receiverEmail,
     required this.receiverId,
-     required this.displayName,
+    required this.displayName,
   });
 
   @override
-  ConsumerState<ChatRoomScreen> createState() => _ChatRoomScreenState();
+  State<ChatRoomScreen> createState() => _ChatRoomScreenState();
 }
 
-class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
+class _ChatRoomScreenState extends State<ChatRoomScreen> {
   late Size size;
   late ThemeData theme;
-  final ChatService _chatService = ChatService();
-  final AuthService _authService = AuthService();
   final ScrollController _scrollController = ScrollController();
-
+  final TextEditingController _messageController = TextEditingController();
 
   @override
   void didChangeDependencies() {
@@ -37,57 +37,52 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
     size = MediaQuery.of(context).size;
     theme = Theme.of(context);
     setStatusBarLightStyle();
-  }
 
-
-  void sendMessage() async {
-    if (_messageController.text.isNotEmpty) {
-      await _chatService.sendMessage(
-        ref: ref,
-        receiver:UserModel(
-            email: widget.receiverEmail,
-            password: '',
-            uid: widget.receiverId,
-          displayName: widget.displayName
-
-
-        ),
-        message: _messageController.text.trim(),
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId != null) {
+      context.read<ChatBloc>().add(
+        LoadMessages(receiverId: widget.receiverId, senderId: userId),
       );
-      _messageController.clear();
-
-
-      // Scroll to bottom
-      Future.delayed(Duration(milliseconds: 100), () {
-        if (_scrollController.hasClients) {
-          _scrollController.animateTo(
-            0, // since reverse: true, 0 is bottom
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-          );
-        }
-      });
     }
   }
 
-  final TextEditingController _messageController = TextEditingController();
+  void sendMessage() async {
+    final text = _messageController.text.trim();
+    if (text.isNotEmpty) {
+      final user = UserModel(
+        uid: widget.receiverId,
+        email: widget.receiverEmail,
+        displayName: widget.displayName,
+        password: '',
+      );
+
+      context.read<ChatBloc>().add(
+        SendMessage(message: text, receiver: user),
+      );
+      _messageController.clear();
+
+      await Future.delayed(const Duration(milliseconds: 100));
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          0,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       backgroundColor: theme.scaffoldBackgroundColor,
       resizeToAvoidBottomInset: true,
       extendBodyBehindAppBar: true,
-
       appBar: CustomWidgets.customAppBar(
         bgColor: theme.scaffoldBackgroundColor,
         bottomOpacity: 0,
-
         scrollUnderElevation: 0,
-        leading: CustomWidgets.customCircleBackButton(
-          color: theme.primaryColor
-        ).padLeft(25.r),
+        leading: CustomWidgets.customCircleBackButton(color: theme.primaryColor).padLeft(25.r),
         title: Row(
           children: [
             CustomWidgets.customCircleIcon(
@@ -98,20 +93,19 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
               iconColor: theme.primaryColor,
             ).padRight(20.r),
             CustomWidgets.customText(
-                data:widget.displayName,style: BaseStyle.s17w400.c(theme.primaryColor)),
-            Spacer(),
+              data: widget.displayName,
+              style: BaseStyle.s17w400.c(theme.primaryColor),
+            ),
+            const Spacer(),
             CustomWidgets.customPopUpMenuBtm(
               borderRadius: BorderRadius.circular(200),
               boxColor: theme.scaffoldBackgroundColor.withAlpha(100),
-              items: [
-                AppStrings.newGroup,
-                AppStrings.newGroup
-              ],
-              onSelected: (v){},
-              icon: Icon(Icons.drag_indicator_rounded,color: theme.primaryColor)
+              items: const ['New Group', 'Settings'],
+              onSelected: (v) {},
+              icon: Icon(Icons.drag_indicator_rounded, color: theme.primaryColor),
             )
           ],
-        )
+        ),
       ),
       body: _buildMessageList(),
       bottomNavigationBar: CustomWidgets.customContainer(
@@ -121,104 +115,87 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
             children: [
               Expanded(
                 child: CustomWidgets.customTextField(
-                  controller:_messageController,
-                  hintText: AppStrings.typeAMessage,
+                  controller: _messageController,
+                  hintText: 'Type a message',
                   style: BaseStyle.s17w400.line(1),
                   hintStyle: BaseStyle.s17w400.line(1),
                   padding: EdgeInsets.symmetric(horizontal: 10.r),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r),borderSide: BorderSide(color: AppColors.hex2824,width:1)),
-        
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                    borderSide: const BorderSide(color: AppColors.hex2824, width: 1),
+                  ),
                 ).padH(10.r),
               ),
               CustomWidgets.customCircleIcon(
-                onTap: (){
-                  final user = UserModel(
-                    uid: widget.receiverId,
-                    email: widget.receiverEmail,
-                    displayName: widget.displayName, password: '',
-                  );
-        
-                  sendMessage();
-                  ref.read(recentUsersProvider.notifier).addOrMoveToTop(user);
-                },
+                onTap: sendMessage,
                 h: 35.r,
                 w: 35.r,
                 bgColor: AppColors.hex2824,
                 iconColor: AppColors.hexEeeb,
-                iconData: Icons.send
-              ).padRight(20.r)
+                iconData: Icons.send,
+              ).padRight(20.r),
             ],
-          )
-        ).padBottom(MediaQuery.of(context).viewPadding.bottom+MediaQuery.of(context).viewInsets.bottom+30.r),
+          ),
+        ).padBottom(MediaQuery.of(context).viewPadding.bottom + MediaQuery.of(context).viewInsets.bottom + 30.r),
       ),
     );
   }
 
-  Widget _buildMessageList(){
-    final sendId = _authService.currentUser?.uid;
-
-    return StreamBuilder(
-        stream: _chatService.getMessages(widget.receiverId, sendId!),
-        builder:(context,snapshot){
-          if(snapshot.hasError){
-            return CustomWidgets.customText(data: 'Error: ${snapshot.hasError} ');
-          }
-          if(snapshot.connectionState == ConnectionState.waiting){
-            return CircularProgressIndicator();
-          }
+  Widget _buildMessageList() {
+    return BlocBuilder<ChatBloc, ChatState>(
+      builder: (context, state) {
+        if (state is ChatLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is ChatLoaded) {
+          final docs = state.messages;
           return ListView(
             reverse: true,
             controller: _scrollController,
-            children:
-              snapshot.data!.docs.reversed.map((doc) => _buildMessageItem(doc)).toList(),
+            children: docs.reversed.map((doc) => _buildMessageItem(doc)).toList(),
           );
-        });
+        } else if (state is ChatError) {
+          return Center(child: Text('Error: ${state.error}'));
+        } else {
+          return const SizedBox();
+        }
+      },
+    );
   }
 
   Widget _buildMessageItem(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
-    final currentUserId = _authService.currentUser?.uid;
+    final currentUserId = FirebaseAuth.instance.currentUser?.uid;
     final isMe = data['senderID'] == currentUserId;
-
     final Timestamp? timestamp = data['timestamp'] as Timestamp?;
     final String formattedTime = formatTimestamp(timestamp);
 
     return Align(
-        alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-        child: CustomWidgets.customContainer(
-
-          constraints: BoxConstraints(
-            maxWidth: size.width/2,
-            minWidth: 50
-          ),
-          margin: EdgeInsets.symmetric(horizontal: 10.r, vertical: 5.r),
-          padding: EdgeInsets.all(12.r),
-
-            border: Border.all(color: isMe ? theme.primaryColor : theme.scaffoldBackgroundColor),
-            color: isMe ? theme.scaffoldBackgroundColor : theme.primaryColor,
-            borderRadius: BorderRadius.circular(12.r),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: isMe?CrossAxisAlignment.end:CrossAxisAlignment.start,
-            children: [
-              CustomWidgets.customText(
-                data:data['message'] ?? '',
-                style: BaseStyle.s17w400.c(
-                  isMe ? theme.primaryColor : theme.scaffoldBackgroundColor,
-                ),
+      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: CustomWidgets.customContainer(
+        constraints: BoxConstraints(maxWidth: size.width / 2, minWidth: 50),
+        margin: EdgeInsets.symmetric(horizontal: 10.r, vertical: 5.r),
+        padding: EdgeInsets.all(12.r),
+        border: Border.all(color: isMe ? theme.primaryColor : theme.scaffoldBackgroundColor),
+        color: isMe ? theme.scaffoldBackgroundColor : theme.primaryColor,
+        borderRadius: BorderRadius.circular(12.r),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            CustomWidgets.customText(
+              data: data['message'] ?? '',
+              style: BaseStyle.s17w400.c(isMe ? theme.primaryColor : theme.scaffoldBackgroundColor),
+            ),
+            SizedBox(height: 4.r),
+            CustomWidgets.customText(
+              data: formattedTime,
+              style: BaseStyle.s11w700.c(
+                isMe ? theme.primaryColor.withAlpha(100) : theme.scaffoldBackgroundColor.withAlpha(100),
               ),
-              SizedBox(height: 4.r),
-              CustomWidgets.customText(
-                data: formattedTime,
-                style: BaseStyle.s11w700.c(
-                  isMe ? theme.primaryColor.withAlpha(100) : theme.scaffoldBackgroundColor.withAlpha(100),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
     );
   }
 }
-

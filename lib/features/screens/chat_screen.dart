@@ -1,19 +1,22 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rt_chat/bloc/recent_user_bloc/recent_user_cubit.dart';
 import 'package:rt_chat/features/onboarding/auth_sevice/suth_service.dart';
 import 'package:rt_chat/features/screens/chat/provider/provider.dart';
+import 'package:rt_chat/features/screens/chat_room/chat_room_screen.dart';
 import 'package:rt_chat/features/screens/provider/provider.dart';
 
 import '../../core/services/navigation/router.dart';
 import '../../core/utilities/utils.dart';
 
-class ChatScreen extends ConsumerStatefulWidget {
+class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
   @override
-  ConsumerState<ChatScreen> createState() => _ChatScreenState();
+  State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends ConsumerState<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen> {
   late Size size;
   late ThemeData theme;
 
@@ -27,12 +30,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final recentChatsAsync = ref.watch(recentUsersProvider);
     final AuthService provider = AuthService();
     final user = provider.currentUser;
-
     final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
-
     return Scaffold(
       appBar: CustomWidgets.customAppBar(
         bgColor: theme.scaffoldBackgroundColor,
@@ -71,19 +71,39 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           ],
         ),
       ),
-      body:ListView.builder(
-            itemCount: recentChatsAsync.length,
-            itemBuilder: (_, index) {
-              final chatUser = recentChatsAsync[index];
-              return CustomWidgets.customChatCard(
-                user: chatUser,
-                onTap: () {
-                  markMessagesAsRead(chatUser.uid!);
-                  context.push(RoutesEnum.chatRoomScreen.path, extra: chatUser);
-                },
-              ).padH(10.r).padV(10.r);
-            },
-          ),
+      body:BlocBuilder<RecentUserCubit,RecentUserState>(
+        builder: (context,state) {
+          if(state is RecentUserInitial){
+            return CircularProgressIndicator();
+          }
+          else if(state is RecentUserLoading){
+            return CircularProgressIndicator();
+          }
+          else if(state is RecentUserLoaded){
+            final list = state.users;
+            return ListView.builder(
+              itemCount: list.length,
+              itemBuilder: (_, index) {
+                final chatUser = list[index];
+                return CustomWidgets.customChatCard(
+                  user: chatUser,
+                  onTap: () {
+                    markMessagesAsRead(chatUser.uid!);
+                    Navigator.push(context,MaterialPageRoute(builder: (context)=> ChatRoomScreen(
+                        receiverEmail: chatUser.email,
+                        receiverId: chatUser.uid!,
+                        displayName:chatUser.displayName!
+                    )));
+                  },
+                ).padH(10.r).padV(10.r);
+              },
+            );
+          }
+          return SizedBox.shrink();
+
+
+    },
+      ),
       floatingActionButton: CustomWidgets.customFloatingActionButton(
         child: Icon(Icons.search, color: theme.colorScheme.onPrimary),
         onTap: () {

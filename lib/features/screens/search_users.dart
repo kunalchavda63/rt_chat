@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rt_chat/bloc/recent_user_bloc/recent_user_cubit.dart';
 import 'package:rt_chat/bloc/search_user_bloc/search_cubit.dart';
 import 'package:rt_chat/core/services/navigation/router.dart';
 import 'package:rt_chat/core/utilities/utils.dart';
@@ -18,26 +20,30 @@ class _SearchUsersState extends State<SearchUsers> {
 
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocus = FocusNode();
-
+  Timer? debouncer;
   final style = BaseStyle.s17w400
       .c(AppColors.hex2824)
       .family(FontFamily.poppins)
       .line(0.9);
-
   @override
   void initState() {
     super.initState();
     context.read<SearchUserCubit>().fetchAllUser();
-
     _searchController.addListener(() {
       final query = _searchController.text.trim();
-      if (query.isEmpty) {
-        context.read<SearchUserCubit>().fetchAllUser();
-      } else {
-        context.read<SearchUserCubit>().searchUser(query, isNewSearch: true);
-      }
+      if(debouncer?.isActive ?? false) debouncer?.cancel();
+      debouncer = Timer(const Duration(milliseconds: 300), (){
+        if (query.isEmpty) {
+          context.read<SearchUserCubit>().fetchAllUser(isNewSearch: true);
+        } else {
+          context.read<SearchUserCubit>().searchUser(query, isNewSearch: true);
+        }
+      });
     });
+
   }
+
+
 
   @override
   void didChangeDependencies() {
@@ -153,18 +159,19 @@ class _SearchUsersState extends State<SearchUsers> {
                       ).padTop(size.height / 4),
                     );
                   }
+
                   return ListView.builder(
                     padding: EdgeInsets.zero,
                     itemCount: userList.length,
                     itemBuilder: (context, index) {
                       final user = userList[index];
-
-                      if (index == userList.length - 1) {
+                      if(index == userList.length-1 && _searchController.text.trim().isNotEmpty){
                         context.read<SearchUserCubit>().searchUser(
                           _searchController.text.trim(),
-                          isNewSearch: false,
+                          isNewSearch: false
                         );
                       }
+
 
                       return CustomWidgets.customAnimationWrapper(
                         duration: const Duration(milliseconds: 800),
@@ -172,6 +179,7 @@ class _SearchUsersState extends State<SearchUsers> {
                         animationType: AnimationType.fade,
                         child: CustomWidgets.customChatCard(
                           onTap: () {
+                            context.read<RecentUserCubit>().addOrMoveToTop(user);
                             context.push(RoutesEnum.chatRoomScreen.path, extra: user);
                           },
                           user: user,
