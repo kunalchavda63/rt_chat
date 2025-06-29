@@ -1,123 +1,32 @@
+import '../../../app_ui/app_ui.dart';
 
+class AppRouter {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+  NavigatorState get _navigator => navigatorKey.currentState!;
 
+  void pop<T>([T? result]) {
+    return _navigator.pop();
+  }
 
+  Future<T?> push<T>(Widget page) {
+    return _navigator.push<T>(MaterialPageRoute(builder: (_) => page));
+  }
 
-import 'package:rt_chat/core/models/src/user_model/user_model.dart';
-import 'package:rt_chat/features/screens/chat_room/chat_room_screen.dart';
+  Future<T?> pushReplacement<T>(Widget page) {
+    return _navigator.pushReplacement<T, dynamic>(
+      MaterialPageRoute(builder: (_) => page),
+    );
+  }
 
-import 'routes.dart';
+  Future<T?> pushAndRemoveUntil<T>(Widget page) {
+    return _navigator.pushAndRemoveUntil<T>(
+      MaterialPageRoute(builder: (_) => page),
+          (route) => false,
+    );
+  }
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
-
-final goRouterConfig = GoRouter(
-  navigatorKey: _rootNavigatorKey,
-  initialLocation: RoutesEnum.appEntryPoint.path,
-  debugLogDiagnostics: true,
-  routes: [
-    GoRoute(
-      name: RoutesEnum.login.name,
-      path: RoutesEnum.login.path,
-      pageBuilder: (_, __) => const NoTransitionPage(child: LoginScreen()),
-    ),
-    GoRoute(
-      name: RoutesEnum.register.name,
-      path: RoutesEnum.register.path,
-      pageBuilder: (_, __) => const NoTransitionPage(child: SignUpScreen()),
-    ),
-    GoRoute(
-      name: RoutesEnum.forgot.name,
-      path: RoutesEnum.forgot.path,
-      pageBuilder: (_, __) => const NoTransitionPage(child: ForgotScreen()),
-    ),
-
-    GoRoute(
-      name: RoutesEnum.appEntryPoint.name,
-      path: RoutesEnum.appEntryPoint.path,
-      pageBuilder: (_, state) {
-        return NoTransitionPage(child: AppEntryPoint());
-      },
-    ),
-    StatefulShellRoute.indexedStack(
-      builder: (context, state, navigationShell) =>
-          Screens(navigationShell: navigationShell),
-      branches: [
-        /// 🟢 Branch 0 → Chats
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: RoutesEnum.chatScreen.path,
-              builder: (context, state) {
-                return ChatScreen();
-              },
-            ),
-          ],
-        ),
-
-        /// 🔵 Branch 1 → Calls
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: RoutesEnum.callLogsScreen.path,
-              builder: (context, state) => const Placeholder(),
-            ),
-          ],
-        ),
-      ],),
-
-    GoRoute(
-      path: RoutesEnum.searchUser.path,
-      builder: (context, state) => const SearchUsers(),
-    ),
-    GoRoute(
-      path: RoutesEnum.newGroup.path,
-      builder: (context, state) => const Placeholder(),
-    ),
-    GoRoute(
-      path: RoutesEnum.newBrodCast.path,
-      builder: (context, state) => const SearchUsers(),
-    ),
-    GoRoute(
-      path: RoutesEnum.linkedDevice.path,
-      builder: (context, state) => const Placeholder(),
-    ),
-    GoRoute(
-      path: RoutesEnum.starred.path,
-      builder: (context, state) => const Placeholder(),
-    ),
-    GoRoute(
-      path: RoutesEnum.settings.path,
-      builder: (context, state) => const SettingsScreen(),
-    ),
-    GoRoute(
-      path: RoutesEnum.profileSetup.path,
-      builder: (context, state) {
-        return  ImageProfileUpdate(
-        );
-      },
-    ),
-    GoRoute(
-      path: RoutesEnum.editName.path,
-      builder: (context, state) {
-        UserModel user = state.extra as UserModel;
-        return  EditName(user:user);
-      },
-    ),
-    GoRoute(
-      path: RoutesEnum.editAbout.path,
-      builder: (context, state) => const EditAbout(),
-    ),
-    GoRoute(
-        path:RoutesEnum.chatRoomScreen.path,
-      builder: (context,state) {
-          final user = state.extra as UserModel;
-        return  ChatRoomScreen(
-          receiverEmail: user.email,
-          receiverId: user.uid!,
-          displayName: user.displayName??'',
-        );
-      }
-    )
-
-  ],
-);
+  Future<T?> pushNamed<T>(String routeName, {Object? argument}) {
+    return _navigator.pushNamed<T>(routeName, arguments: argument);
+  }
+}

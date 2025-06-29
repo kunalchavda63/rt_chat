@@ -1,52 +1,45 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:rt_chat/core/app_ui/src/widgets/custom_widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rt_chat/features/screens/chat_screen.dart';
+
+import '../../core/app_ui/app_ui.dart';
 
 class Screens extends StatelessWidget {
-  final StatefulNavigationShell navigationShell;
-  const Screens({super.key, required this.navigationShell});
+  final List<Widget> _screens = const [
+    ChatScreen(),
+    Placeholder(),
+  ];
+
+  const Screens({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: CustomWidgets.customAppBar(
-        height: 0,
-        bgColor: Theme.of(context).scaffoldBackgroundColor
-      ),
-      body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        destinations:
-            destinations
-                .map(
-                  (destination) => NavigationDestination(
-                    icon: Icon(destination.icon),
-                    label: destination.label,
-                    selectedIcon: Icon(destination.icon, color: Colors.white),
-                  ),
-                )
-                .toList(),
-
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: (index)=>navigationShell.goBranch(index),
-        indicatorColor: Theme.of(context).focusColor,
-        indicatorShape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-
-      ),
+    return BlocBuilder<NavigationCubit, int>(
+      builder: (context, index) {
+        return Scaffold(
+          body: IndexedStack(
+            index: index,
+            children: _screens,
+          ),
+          bottomNavigationBar: NavigationBar(
+            selectedIndex: index,
+            onDestinationSelected: (i) =>
+                context.read<NavigationCubit>().setIndex(i),
+            destinations: const [
+              NavigationDestination(icon: Icon(Icons.chat), label: 'Chats'),
+              NavigationDestination(icon: Icon(Icons.call), label: 'Calls'),
+            ],
+          ),
+        );
+      },
     );
   }
 }
 
-class Destination {
-  const Destination({required this.label, required this.icon});
-  final String label;
-  final IconData icon;
-}
 
-const destinations = [
-  Destination(label: 'Chats', icon: Icons.chat),
-  Destination(label: 'Calls', icon: Icons.call_sharp),
-];
+class NavigationCubit extends Cubit<int> {
+  NavigationCubit() : super(0);
+
+  void setIndex(int index) {
+    emit(index); // ✅ Correct way to update state
+  }
+}

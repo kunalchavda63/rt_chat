@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/models/src/user_model/user_model.dart';
-import '../../../../core/services/navigation/src/routes.dart';
-import '../../../../core/utilities/utils.dart';
-import '../../../onboarding/provider/provider.dart';
+import 'package:rt_chat/core/services/navigation/src/app_router.dart';
+import 'package:rt_chat/core/services/repositories/auth_repository.dart';
+import 'package:rt_chat/core/services/repositories/service_locator.dart';
+import '../../../../core/app_ui/app_ui.dart';
+  import '../../../../core/utilities/utils.dart';
 
 class EditName extends ConsumerStatefulWidget {
   final UserModel user;
@@ -38,21 +40,21 @@ class _EditNameState extends ConsumerState<EditName> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = ref.watch(authServiceProvider);
-    final user = provider.currentUser;
+    final user = getIt<AuthRepository>().auth.currentUser;
     final displayName = user?.displayName;
+    // todo add bloc for edit name or getinit update
 
-    void updateName() async{
-      try{
-        await provider.updateUserName(
-            username: nameController.text.trim(),
-            context: context
-        );
-      }
-      on FirebaseAuthException catch(e){
-        debugPrint(e.message);
-      }
-    }
+    // void updateName() async{
+    //   try{
+    //     await provider.updateUserName(
+    //         username: nameController.text.trim(),
+    //         context: context
+    //     );
+    //   }
+    //   on FirebaseAuthException catch(e){
+    //     debugPrint(e.message);
+    //   }
+    // }
 
     return Scaffold(
       backgroundColor: AppColors.hexEeeb,
@@ -105,7 +107,7 @@ class _EditNameState extends ConsumerState<EditName> {
                 Spacer(),
                 CustomWidgets.customButton(
                   onTap: (){
-                    updateName();
+                    // updateName();
                   },
                   isFullyWhite: true,
                   label: AppStrings.submit,)

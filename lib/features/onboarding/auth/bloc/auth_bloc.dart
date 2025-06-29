@@ -1,14 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rt_chat/core/app_ui/app_ui.dart';
+import 'package:rt_chat/core/services/repositories/auth_repository.dart';
+import 'package:rt_chat/core/services/repositories/service_locator.dart';
 
 import 'auth_event.dart';
 import 'auth_state.dart';
-import '../../auth_sevice/suth_service.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthService service;
 
-  AuthBloc(this.service) : super(AuthInitial()) {
+  AuthBloc() : super(AuthInitial()) {
     on<SignInRequested>(_onSignInRequested);
     on<SignUpRequested>(_onSignUpRequested);
     on<SignOutRequested>(_onSignOutRequested);
@@ -22,11 +22,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       SignInRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
-      await service.signIn(
-        email: event.email,
-        password: event.password,
-      );
-      final user = service.currentUser;
+      await getIt<AuthRepository>().signIn(email: event.email, password: event.password);
+      final user = getIt<AuthRepository>().auth.currentUser;
       emit(Authenticated(user: user!));
     } catch (e) {
       emit(AuthError(message: e.toString()));
@@ -38,10 +35,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       SignUpRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
-      await service.createAccount(
-        user: event.user
-      );
-      final user = service.currentUser;
+      await getIt<AuthRepository>().createAccount(user: event.user);
+
+      final user = getIt<AuthRepository>().auth.currentUser;
+
       emit(Authenticated(user: user!));
     } catch (e) {
       emit(AuthError(message: e.toString()));
@@ -53,7 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       SignOutRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
-      await service.signOut();
+      await getIt<AuthRepository>().signOut();
       emit(Unauthenticated());
     } catch (e) {
       emit(AuthError(message: e.toString()));
@@ -64,7 +61,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onCheckAuthStatus(
       CheckAuthStatus event, Emitter<AuthState> emit) async {
     try {
-      final user = service.currentUser;
+      final user = getIt<AuthRepository>().auth.currentUser;
+
       if (user != null) {
         emit(Authenticated(user: user));
       } else {
@@ -80,7 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       ForgotPasswordRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
-      await service.sendForgotPasswordEmail(email: event.email);
+      await getIt<AuthRepository>().sendForgotPasswordEmail(email: event.email);
       emit(AuthMessage(message: 'Password reset email sent.'));
     } catch (e) {
       emit(AuthError(message: e.toString()));

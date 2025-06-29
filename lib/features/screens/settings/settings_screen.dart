@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rt_chat/core/services/navigation/router.dart';
-import 'package:rt_chat/core/utilities/src/helper_method.dart';
+import 'package:rt_chat/core/services/repositories/service_locator.dart';
 import 'package:rt_chat/core/utilities/src/strings.dart';
+import 'package:rt_chat/features/onboarding/onboarding.dart';
 
+import '../../../core/app_ui/app_ui.dart';
+import '../../../core/services/navigation/src/app_router.dart';
 import '../../onboarding/auth/bloc/auth_bloc.dart';
 import '../../onboarding/auth/bloc/auth_event.dart';
 import '../../onboarding/auth/bloc/auth_state.dart';
@@ -18,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is Unauthenticated) {
-          go(context, RoutesEnum.appEntryPoint.path);
+          getIt<AppRouter>().pushReplacement(AppEntryPoint());
         } else if (state is AuthError) {
           showErrorToast("Logout Failed: ${state.message}");
         }

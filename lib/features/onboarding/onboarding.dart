@@ -1,7 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rt_chat/core/services/navigation/router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rt_chat/core/services/navigation/src/app_router.dart';
+import 'package:rt_chat/core/services/repositories/service_locator.dart';
+import 'package:rt_chat/features/onboarding/login_screen.dart';
 
+import '../../core/app_ui/app_ui.dart';
+import '../screens/screens.dart';
 import 'auth/bloc/auth_bloc.dart';
 import 'auth/bloc/auth_event.dart';
 import 'auth/bloc/auth_state.dart';
@@ -27,10 +30,10 @@ class _AppEntryPointState extends State<AppEntryPoint> {
       listenWhen: (previous, current) => current is Authenticated || current is Unauthenticated,
       listener: (context, state) {
         if (state is Authenticated) {
-          final User user = state.user;
-          context.go(RoutesEnum.chatScreen.path, extra: user);
+          getIt<AppRouter>().pushReplacement(Screens());
         } else if (state is Unauthenticated) {
-          context.go(RoutesEnum.login.path);
+          getIt<AppRouter>().push(LoginScreen());
+
         }
       },
       child: BlocBuilder<AuthBloc, AuthState>(

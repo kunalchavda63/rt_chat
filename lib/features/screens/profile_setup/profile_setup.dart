@@ -1,8 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/core/models/src/user_model/user_model.dart';
-import 'package:rt_chat/core/services/navigation/router.dart';
 import 'package:rt_chat/core/utilities/utils.dart';
+import 'package:rt_chat/features/screens/profile_setup/screens/edit_about.dart';
+import 'package:rt_chat/features/screens/profile_setup/screens/edit_name.dart';
+
+import '../../../core/app_ui/app_ui.dart';
+import '../../../core/services/navigation/src/app_router.dart';
+import '../../../core/services/repositories/service_locator.dart';
 
 class ImageProfileUpdate extends ConsumerStatefulWidget {
   const ImageProfileUpdate( {
@@ -70,7 +75,8 @@ class _ImageProfileUpdateState extends ConsumerState<ImageProfileUpdate> {
                 icon: Icons.person_2_outlined,
                 context: context,
                 onTap: (){
-                  context.push(RoutesEnum.editName.path,extra: user);
+                  getIt<AppRouter>().push(EditName(user: user));
+
                 }
               ),
               widgetCard(
@@ -79,7 +85,8 @@ class _ImageProfileUpdateState extends ConsumerState<ImageProfileUpdate> {
                 icon: Icons.info_outline,
                 context: context,
                   onTap: (){
-                  context.push(RoutesEnum.editName.path,extra: user);
+                    getIt<AppRouter>().push(EditAbout());
+
 
                   }
               ),

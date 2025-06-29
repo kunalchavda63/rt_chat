@@ -19,9 +19,7 @@ PlatformType getCurrentPlatform() {
       return PlatformType.linux;
     case TargetPlatform.fuchsia:
       return PlatformType.fuchsia;
-    default:
-      return PlatformType.unknown;
-  }
+    }
 }
 
 bool get isAndroid => getCurrentPlatform() == PlatformType.android;

@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../features/screens/chat/provider/provider.dart';
 import '../../../../models/src/user_model/user_model.dart';
-import '../../../../services/navigation/router.dart';
 import '../../../app_ui.dart';
 
 class CustomChatCard extends ConsumerStatefulWidget {

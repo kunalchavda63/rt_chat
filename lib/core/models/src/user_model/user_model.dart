@@ -23,5 +23,7 @@ abstract class UserModel with _$UserModel {
   }
   factory UserModel.fromMap(Map<String, dynamic> map) =>
       UserModel.fromJson(map); // 👈 optional alias
-
+}
+extension UserModelX on UserModel {
+  Map<String, dynamic> toMap() => toJson();
 }

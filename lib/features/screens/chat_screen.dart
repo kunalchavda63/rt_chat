@@ -1,12 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rt_chat/bloc/recent_user_bloc/recent_user_cubit.dart';
-import 'package:rt_chat/features/onboarding/auth_sevice/suth_service.dart';
+import 'package:rt_chat/core/services/repositories/auth_repository.dart';
 import 'package:rt_chat/features/screens/chat/provider/provider.dart';
 import 'package:rt_chat/features/screens/chat_room/chat_room_screen.dart';
-import 'package:rt_chat/features/screens/provider/provider.dart';
+import 'package:rt_chat/features/screens/search_users.dart';
+import 'package:rt_chat/features/screens/settings/settings_screen.dart';
 
-import '../../core/services/navigation/router.dart';
+import '../../core/app_ui/app_ui.dart';
+import '../../core/services/navigation/src/app_router.dart';
+import '../../core/services/repositories/service_locator.dart';
 import '../../core/utilities/utils.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -30,15 +32,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthService provider = AuthService();
-    final user = provider.currentUser;
+    final user = getIt<AuthRepository>().auth.currentUser;
     final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
     return Scaffold(
       appBar: CustomWidgets.customAppBar(
         bgColor: theme.scaffoldBackgroundColor,
         leading: CustomWidgets.customContainer(
           onTap: () {
-            context.push(RoutesEnum.profileSetup.path, extra: user);
+            // context.push(RoutesEnum.profileSetup.path, extra: user);
           },
           color: theme.primaryColor.withAlpha(40),
           alignment: Alignment.center,
@@ -65,7 +66,8 @@ class _ChatScreenState extends State<ChatScreen> {
               ],
               icon: Icon(Icons.more_vert, color: textColor),
               onSelected: (value) {
-                context.push(RoutesEnum.settings.path);
+                getIt<AppRouter>().push(SettingsScreen());
+
               },
             ),
           ],
@@ -107,7 +109,8 @@ class _ChatScreenState extends State<ChatScreen> {
       floatingActionButton: CustomWidgets.customFloatingActionButton(
         child: Icon(Icons.search, color: theme.colorScheme.onPrimary),
         onTap: () {
-          context.push(RoutesEnum.searchUser.path);
+          getIt<AppRouter>().push(SearchUsers());
+
         },
         backgroundColor: theme.primaryColor,
       ),

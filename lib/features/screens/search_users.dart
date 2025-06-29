@@ -3,9 +3,13 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rt_chat/bloc/recent_user_bloc/recent_user_cubit.dart';
 import 'package:rt_chat/bloc/search_user_bloc/search_cubit.dart';
-import 'package:rt_chat/core/services/navigation/router.dart';
+import 'package:rt_chat/core/services/navigation/src/app_router.dart';
+import 'package:rt_chat/core/services/repositories/service_locator.dart';
 import 'package:rt_chat/core/utilities/utils.dart';
+import 'package:rt_chat/features/screens/chat_room/chat_room_screen.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+
+import '../../core/app_ui/app_ui.dart';
 
 class SearchUsers extends StatefulWidget {
   const SearchUsers({super.key});
@@ -180,7 +184,8 @@ class _SearchUsersState extends State<SearchUsers> {
                         child: CustomWidgets.customChatCard(
                           onTap: () {
                             context.read<RecentUserCubit>().addOrMoveToTop(user);
-                            context.push(RoutesEnum.chatRoomScreen.path, extra: user);
+                            getIt<AppRouter>().push(ChatRoomScreen(receiverEmail: user.email, receiverId: user.uid!, displayName: user.displayName!));
+
                           },
                           user: user,
                         ).padH(20.r).padV(10.r),

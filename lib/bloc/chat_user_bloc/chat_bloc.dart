@@ -12,11 +12,10 @@ part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final ChatService _chatService;
-  final FirebaseAuth _auth;
 
   StreamSubscription? _subscription;
 
-  ChatBloc(this._chatService, this._auth) : super(ChatInitial()) {
+  ChatBloc(this._chatService) : super(ChatInitial()) {
     on<LoadMessages>(_onLoadMessages);
     on<SendMessage>(_onSendMessage);
   }
@@ -39,7 +38,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   Future<void> _onSendMessage(SendMessage event, Emitter<ChatState> emit) async {
     try {
-      final user = _auth.currentUser!;
       await _chatService.sendMessage(
         receiver: event.receiver,
         ref: null,

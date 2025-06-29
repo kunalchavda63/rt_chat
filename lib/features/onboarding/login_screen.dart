@@ -1,10 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
+import 'package:rt_chat/core/services/navigation/src/app_router.dart';
+import 'package:rt_chat/core/services/repositories/service_locator.dart';
 import 'package:rt_chat/features/onboarding/auth/bloc/auth_event.dart';
+import 'package:rt_chat/features/onboarding/forgot_screen.dart';
+import 'package:rt_chat/features/onboarding/register_screen.dart';
 
 import '../../core/app_ui/app_ui.dart';
-import '../../core/services/navigation/src/route_constants.dart';
 import '../../core/utilities/utils.dart';
 import 'auth/bloc/auth_bloc.dart';
 import 'auth/bloc/auth_state.dart';
@@ -74,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
-            go(context, RoutesEnum.appEntryPoint.path);
+
           } else if (state is AuthError) {
             showErrorToast(state.message);
           }
@@ -210,10 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       Center(
                                         child: GestureDetector(
                                           onTap: () {
-                                            push(
-                                              context,
-                                              RoutesEnum.forgot.path,
-                                            );
+                                            getIt<AppRouter>().push(ForgotScreen());
                                           },
                                           child: CustomWidgets.customText(
                                             data: AppStrings.forgotPassword,
@@ -271,9 +270,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ).padRight(10.r),
                                           GestureDetector(
                                             onTap: () {
-                                              context.push(
-                                                RoutesEnum.register.path,
-                                              );
+                                              getIt<AppRouter>().push(SignUpScreen());
+
+
                                             },
                                             child: CustomWidgets.customText(
                                               data: AppStrings.signUp,
