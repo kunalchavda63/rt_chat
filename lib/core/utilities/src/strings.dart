@@ -1,0 +1,79 @@
+class AppStrings {
+  static const String welcomeBack = 'Welcome\n back!';
+  static const String loginC = 'LOGIN';
+  static const String email = 'Email';
+  static const String password = 'Password';
+  static const String forgotPassword = 'Forgot Password?';
+  static const String or = 'or log in with';
+  static const String bySigningUp = 'By signing up,you agree to our ';
+  static const String terms = ' Terms';
+  static const String seeHowWeUse = '. See how we use your data in our ';
+  static const String privacyPolicy = 'Privacy Policy';
+  static const String doNotHaveAnAccount = "Don't have an account?";
+  static const String signUp = "Sign Up";
+  static const String createNewAccount = 'Create account';
+  static const String userid = 'User Id';
+  static const String confirmPassword = 'Confirm Password';
+  static const String alreadyHaveAnAccount = 'Already have an account?';
+  static const String login = 'Log in';
+  static const String logout = 'Log Out';
+  static const String forgotPara =
+      "Don't worry! it happens. please enter the mobile number which is associated your account";
+  static const String send = 'Send';
+  static const String otpVerification = 'OTP Verification';
+  static const String enterTheOtp = 'Enter the OTP sent to ';
+  static const String verify = 'Verify';
+  static const String didNotReceivedOtp = "Didn't received the OTP? ";
+  static const String resend = 'Resend';
+  static const String resetPassword = 'Reset Password';
+  static const String submit = 'Submit';
+  static const String searchUser = 'Search User';
+  static const String search = 'Search';
+  static const String newGroup = 'New Group';
+  static const String newBroadCast = 'New BroadCase';
+  static const String linkedDevice = 'Linked Device';
+  static const String starred = 'Starred';
+  static const String payments = 'Payments';
+  static const String readAll = 'Read All';
+  static const String settings = 'Settings';
+  static const String account = 'Account';
+  static const String securityNotification = 'Security Notification';
+  static const String changeNumber = 'Change Number';
+  static const String privacy = 'Privacy';
+  static const String blockContacts = 'Block Contacts';
+  static const String disappearingMessages = 'disappearing messages';
+  static const String avatar = 'Avatar';
+  static const String create = 'Create';
+  static const String edit = 'Edit';
+  static const String profilePhoto = 'Profile Photo';
+  static const String lists = 'Lists';
+  static const String enterAValidEmail = 'Enter a valid email Address';
+  static const String emailCannotBeEmpty = 'Email cannot be empty';
+  static const String passwordCannotBeEmpty = 'Password cannot be empty';
+  static const String passwordMustBeAtLest6Characters = 'Password must be at least 6 characters';
+  static const String nameCannotBeEmpty = 'Name cannot be empty';
+  static const String nameCannotBeAtLeast2Characters = 'Name must be at least 2 characters';
+  static const String male = 'Male';
+  static const String female = 'Female';
+  static const String others = 'Others';
+  static const String pleaseEnterMaleOrFemale = 'Please enter male, female, or other';
+  static const String genderCannotBeEmpty = 'Gender cannot be empty';
+  static const String pleaseConfirmUPassword = 'Please confirm your password';
+  static const String passwordDoNotMatch = 'Passwords do not match';
+  static const String discoverUsers = 'Discover Users';
+  static const String noName = 'No Name';
+  static const String camera = 'Camera';
+  static const String gallery = 'Gallery';
+  static const String about = 'About';
+  static const String phone = 'Phone';
+  static const String link = 'Link';
+  static const String yourName = 'Your name';
+  static const String name = 'Name';
+  static const String peopleWillSee = "People will see this name if you interact with them and they don't have you saved as a contact";
+  static const String save = 'Save';
+  static const String typeAMessage = 'Type a message';
+
+
+
+
+}
