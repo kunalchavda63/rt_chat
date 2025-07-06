@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rt_chat/core/app_ui/app_ui.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final String? label;
   final String? hintText;
   final String? Function(String?)? validator;
@@ -22,7 +23,8 @@ class CustomTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final int? maxLength;
   final String? initialValue;
-  final Color? cusrsonColor;
+  final Color? cursorColor;
+  final bool? obscureText;
 
   const CustomTextField({
     super.key,
@@ -46,45 +48,67 @@ class CustomTextField extends StatelessWidget {
     this.focusNode,
     this.maxLength,
     this.initialValue,
-    this.cusrsonColor,
+    this.cursorColor,
+    this.obscureText = false
   });
 
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  late bool _obscure;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscure = widget.obscureText ?? false;
+  }
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       maxLengthEnforcement: MaxLengthEnforcement.none,
       inputFormatters: [],
-      textCapitalization: textCapitalization ?? TextCapitalization.none,
-      initialValue: initialValue,
-      focusNode: focusNode,
-      keyboardType: textInputType,
-      style: style,
-      expands: isExpand ?? false,
-      controller: controller,
-      cursorColor: cusrsonColor,
+      textCapitalization: widget.textCapitalization ?? TextCapitalization.none,
+      initialValue: widget.initialValue,
+      focusNode: widget.focusNode,
+      keyboardType: widget.textInputType,
+      style: widget.style,
+      expands: widget.isExpand ?? false,
+      controller: widget.controller,
+      cursorColor: widget.cursorColor,
       cursorHeight: 20,
-      textInputAction: textInputAction,
-      maxLength: maxLength,
+      textInputAction: widget.textInputAction,
+      maxLength: widget.maxLength,
       decoration: InputDecoration(
-        border: border,
-        focusedErrorBorder: border,
-        errorBorder: border,
-        enabledBorder: border,
-        disabledBorder: border,
-        focusedBorder: border,
-        contentPadding: padding,
-        hintText: hintText,
-        labelText: label,
-        floatingLabelStyle: labelStyle,
-        hintStyle: hintStyle,
-        labelStyle: labelStyle,
-        filled: filled,
-        fillColor: fillColor,
-        prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
+        border: widget.border,
+        focusedErrorBorder: widget.border,
+        errorBorder: widget.border,
+        enabledBorder: widget.border,
+        disabledBorder: widget.border,
+        focusedBorder: widget.border,
+        contentPadding: widget.padding,
+        hintText: widget.hintText,
+        labelText: widget.label,
+        floatingLabelStyle: widget.labelStyle,
+        hintStyle: widget.hintStyle,
+        labelStyle: widget.labelStyle,
+        filled: widget.filled,
+        fillColor: widget.fillColor,
+        prefixIcon: widget.prefixIcon,
+        suffixIcon: widget.obscureText==true
+            ? GestureDetector(
+            onTap: () => setState(() {
+              _obscure = !_obscure;
+            }),
+            child:SvgPicture.asset(
+                _obscure == true ? AssetIcons.icEye:AssetIcons.icStrEye,height: 20,width: 20,)).padRight(20).padV(10.r):
+        widget.suffixIcon,
         counterText: "",
       ),
-      validator: validator,
+      validator: widget.validator,
+      obscureText: _obscure,
+
     );
   }
 }

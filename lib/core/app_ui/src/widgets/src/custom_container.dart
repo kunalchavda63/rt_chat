@@ -17,6 +17,7 @@ class CustomContainer extends StatelessWidget {
   final BlendMode? blendMode;
   final Clip? clipBehaviour;
   final String? path;
+  final Gradient? gradient;
 
 
   const CustomContainer({
@@ -36,7 +37,8 @@ class CustomContainer extends StatelessWidget {
     this.clipBehaviour,
     this.path,
     this.constraints,
-    this.margin
+    this.margin,
+    this.gradient
   });
 
   @override
@@ -51,6 +53,7 @@ class CustomContainer extends StatelessWidget {
         margin: margin,
         constraints: constraints,
         decoration: BoxDecoration(
+          gradient: gradient,
           backgroundBlendMode: blendMode,
           image:
               path != null

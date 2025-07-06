@@ -27,9 +27,10 @@ class CustomWidgets {
     String? initialValue,
     int? maxLength,
     Color? cursorColor,
+    bool? obscureText
   }) {
     return CustomTextField(
-      cusrsonColor: cursorColor,
+      cursorColor: cursorColor,
       focusNode: focusNode,
       label: label,
       hintText: hintText,
@@ -49,6 +50,7 @@ class CustomWidgets {
       filled: filled,
       style: style,
       maxLength: maxLength,
+      obscureText: obscureText,
     );
   }
 
@@ -70,11 +72,13 @@ class CustomWidgets {
     BlendMode? blendMode,
     Clip? clip,
     String? path,
+    Gradient? gradient,
   }) {
     return CustomContainer(
       h: h,
       w: w,
       margin: margin,
+      gradient: gradient,
       constraints: constraints,
       color: color,
       padding: padding,
