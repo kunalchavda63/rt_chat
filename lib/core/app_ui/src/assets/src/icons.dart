@@ -10,8 +10,8 @@ class AssetIcons {
   static const String icChrome = '$icPath/ic_chrome.svg';
   static const String icWhatsapp = '$icPath/ic_whatsapp.svg';
   static const String icSent = '$icPath/ic_sent.svg';
-  static const String icEye = '$icPath/ic_eye.svg';
-  static const String icStrEye = '$icPath/ic_eye_str.svg';
+  static const String icEye = '$icPath/vector_eye.svg';
+  static const String icStrEye = '$icPath/vector_st_eye.svg';
   static const String icForgot = '$icPath/ic_forgot.svg';
   static const String icOtp = '$icPath/ic_otp.svg';
 }

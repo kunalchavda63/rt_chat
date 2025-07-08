@@ -29,68 +29,69 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: CustomWidgets.customAppBar(height: 0,bgColor: AppColors.white),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            CustomWidgets.customImageView(path: AssetImages.imgLoginLogo,sourceType: ImageType.network,height: size.height/3,width: size.width).padTop(35.r),
-            CustomWidgets.customText(data: AppStrings.login,style: BaseStyle.s23w500.c(AppColors.hex3b0a)).padBottom(20),
-            CustomWidgets.customText(
-              data: AppStrings.email,
-              style: BaseStyle.s17w400.c(AppColors.hex3b0a)
-            ).padLeft(5.r).padBottom(3.r),
-            
-            CustomWidgets.customTextField(
-              controller: _emailController,
-              focusNode: _emailFocus,
-              textInputAction: TextInputAction.next,
-              textInputType: TextInputType.emailAddress,
-              style: BaseStyle.s17w400.c(AppColors.hex3b0a),
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.r),
-                  borderSide: BorderSide(color: AppColors.hexF2c9,width: 2)),
-            ).padBottom(20.r),
-            CustomWidgets.customText(
-                data: AppStrings.password,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CustomWidgets.customImageView(path: AssetImages.imgLoginLogo,sourceType: ImageType.network,height: size.height/3,width: size.width).padTop(35.r),
+              CustomWidgets.customText(data: AppStrings.login,style: BaseStyle.s23w500.c(AppColors.hex3b0a)).padBottom(20),
+              CustomWidgets.customText(
+                data: AppStrings.email,
                 style: BaseStyle.s17w400.c(AppColors.hex3b0a)
-            ).padLeft(5.r).padBottom(3.r),
-            
-            CustomWidgets.customTextField(
-              controller: _passwordController,
-              focusNode: _passFocus,
-              textInputType: TextInputType.visiblePassword,
-              obscureText: true,
-              style: BaseStyle.s17w400.c(AppColors.hex3b0a),
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: BorderSide(color: AppColors.hexF2c9,width: 2)),
-            ),
+              ).padLeft(5.r).padBottom(3.r),
 
-            CustomWidgets.customText(data: AppStrings.forgotPassword,style: BaseStyle.s14w500.c(AppColors.hex8a2b),textAlign: TextAlign.center).padV(10.r),
-            CustomWidgets.customButton(
-              label: AppStrings.login,
-            ),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CustomWidgets.customText(
-                  data: AppStrings.doNotHaveAnAccount,
-                  style: BaseStyle.s16w500.c(AppColors.hex8a2b)
-                ),
-                GestureDetector(
-                  onTap: ()=>getIt<AppRouter>().push(SignUpScreen()),
-                  child: CustomWidgets.customText(
-                      data: " ${AppStrings.signUp}",
-                    style: BaseStyle.s14w500.c(AppColors.hex3b0a),
+              CustomWidgets.customTextField(
+                controller: _emailController,
+                focusNode: _emailFocus,
+                textInputAction: TextInputAction.next,
+                textInputType: TextInputType.emailAddress,
+                style: BaseStyle.s17w400.c(AppColors.hex3b0a),
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(color: AppColors.hexF2c9,width: 2)),
+              ).padBottom(20.r),
+              CustomWidgets.customText(
+                  data: AppStrings.password,
+                  style: BaseStyle.s17w400.c(AppColors.hex3b0a)
+              ).padLeft(5.r).padBottom(3.r),
+
+              CustomWidgets.customTextField(
+                controller: _passwordController,
+                focusNode: _passFocus,
+                textInputType: TextInputType.visiblePassword,
+                obscureText: true,
+                style: BaseStyle.s17w400.c(AppColors.hex3b0a),
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(color: AppColors.hexF2c9,width: 2)),
+              ),
+
+              CustomWidgets.customText(data: AppStrings.forgotPassword,style: BaseStyle.s14w500.c(AppColors.hex8a2b),textAlign: TextAlign.center).padV(10.r),
+              CustomWidgets.customButton(
+                label: AppStrings.login,
+              ).padBottom(105.r),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomWidgets.customText(
+                    data: AppStrings.doNotHaveAnAccount,
+                    style: BaseStyle.s16w500.c(AppColors.hex8a2b)
                   ),
-                ),
-              ],
-            ).padBottom(MediaQuery.of(context).viewInsets.bottom+MediaQuery.of(context).viewPadding.bottom+25.r),
-          ],
-        ).padH(20.r),
+                  GestureDetector(
+                    onTap: ()=>getIt<AppRouter>().push(SignUpScreen()),
+                    child: CustomWidgets.customText(
+                        data: " ${AppStrings.signUp}",
+                      style: BaseStyle.s14w500.c(AppColors.hex3b0a),
+                    ),
+                  ),
+                ],
+              ).padBottom(MediaQuery.of(context).viewInsets.bottom+MediaQuery.of(context).viewPadding.bottom+25.r),
+            ],
+          ).padH(20.r),
+        ),
       ),
     );
   }

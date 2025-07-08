@@ -32,12 +32,21 @@ class CustomImageView extends StatelessWidget {
           width: width,
           fit: fit,
           placeholderFadeInDuration: const Duration(milliseconds: 500),
-          placeholder:
-              (context, url) => CustomWidgets.customContainer(
-                h: 30,
-                w: 30,
-                color: AppColors.hex3E3f,
+          progressIndicatorBuilder: (context, url, downloadProgress) {
+            final double progressValue = downloadProgress.progress ?? 0.0;
+
+            return Center(
+              child: SizedBox(
+                width: 30,
+                height: 30,
+                child: CircularProgressIndicator(
+                  value: progressValue,
+                  strokeWidth: 3,
+                  valueColor: AlwaysStoppedAnimation(AppColors.hex3E3f),
+                ),
               ),
+            );
+          },
           imageBuilder: (context, imageProvider) {
             return _AnimatedImageWrapper(
               image: Image(

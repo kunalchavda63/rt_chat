@@ -102,7 +102,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               _obscure = !_obscure;
             }),
             child:SvgPicture.asset(
-                _obscure == true ? AssetIcons.icEye:AssetIcons.icStrEye,height: 20,width: 20,)).padRight(20).padV(10.r):
+                _obscure == true ? AssetIcons.icEye:AssetIcons.icStrEye,colorFilter: ColorFilter.mode(AppColors.hex3b0a,BlendMode.srcIn),)).padH(10.r):
         widget.suffixIcon,
         counterText: "",
       ),
